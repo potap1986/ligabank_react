@@ -1,5 +1,6 @@
 .container {
     max-width: 1366px;
+    padding: 0;
     padding-left: 98px;
     padding-right: 98px;
     margin: 0 auto;
@@ -26,6 +27,7 @@
 
 body {
     font-family: "Roboto", "Arial", sans-serif;
+    margin: 0;
 }
 
 *,
