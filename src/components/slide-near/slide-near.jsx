@@ -1,9 +1,9 @@
 import React from 'react';
 import './slide-near.scss';
 
-const SlideNear = () => {
+const SlideNear = ({classSlide}) => {
   return (
-    <section className="slide-near">
+    <section className={"slide-near" + classSlide}>
       <div className="slide-near__container container">
         <div className="slide-near__content">
           <h2 className="slide-near__title">Лига Банк</h2>

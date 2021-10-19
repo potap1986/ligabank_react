@@ -1,9 +1,9 @@
 import React from 'react';
 import './slide-credit.scss';
 
-const SlideCredit = () => {
+const SlideCredit = ({classSlide}) => {
   return (
-    <section className="slide-credit">
+    <section className={"slide-credit" + classSlide}>
       <div className="slide-credit__container container">
         <div className="slide-credit__content">
           <h2 className="slide-credit__title">Лига Банк</h2>

@@ -8,7 +8,6 @@
 	color: white;
 	padding-top: 80px;
 	padding-bottom: 75px;
-	margin-bottom: 46px;
 }
 
 .slide-credit__container {
@@ -62,6 +61,6 @@
 
 .slide-credit__picture {
 	img {
-		transform: scale(1.14) translate(33px, 3px);
+		transform: scaleX(1.12) scaleY(1.17) translate(33px, 3px);
 	}
 }

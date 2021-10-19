@@ -1,0 +1,120 @@
+.popup-enter {
+  display: none;
+  position: fixed;
+  display: flex;
+
+}
+
+.popup-enter__wrapper {
+  display: none;
+  position: fixed;
+  padding: 60px;
+  flex-basis: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  background: #F6F7FF;
+  border: 4px solid #2C36F2;
+} 
+
+.popup-enter__head {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 45px;
+}
+
+.popup-enter__logo {
+  fill: #2C36F2;
+  margin-right: 8px;
+  width: 30px;
+  height: 30px;
+}
+
+.popup-enter__close {
+  cursor: pointer;
+  border: none;
+  background-color: inherit;
+  margin-left: auto;
+}
+
+.popup-enter__title {
+  color: #1F1E25;
+  
+
+  p {
+    margin: 0;
+    margin-bottom: 5px;    
+	  font-family: "WorkSans", "Arial", sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 23px;
+  }
+
+  span {    
+    font-family: "Roboto", "Arial", sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 14px;
+    display: block;
+  }
+}
+
+.popup-enter__label {
+  display: block;
+  text-align: left;
+  color: #394959;
+  margin-bottom: 10px;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 140%;
+}
+
+.popup-enter__input {
+  padding: 23px;
+  margin-bottom: 30px;
+  width: 100%;
+  border: 1px solid #1F1E25;
+  background-color: #F6F7FF;
+  border-radius: 4px;
+
+  &--password {
+    margin-bottom: 10px;
+    padding-right: 50px;
+  }
+}
+
+.popup-enter__password {
+  position: relative;
+}
+
+.popup-enter__private {
+  position: absolute;
+  cursor: pointer;
+  border: none;
+  background-color: inherit;
+  top: 24px;
+  right: 24px;
+}
+
+.popup-enter__link {
+  margin-bottom: 30px;
+  color: #1F1E25;
+  display: block;
+  text-align: right;
+  text-decoration: none;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 140%;
+}
+
+.popup-enter__button {
+  cursor: pointer;
+  padding: 23px;
+  width: 100%;
+  background: #2C36F2;
+  border-radius: 4px;
+  color: #F6F7FF;
+  border: none;
+}

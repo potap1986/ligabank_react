@@ -1,0 +1,95 @@
+.tab {
+  background: #F6F7FF;
+  padding: 60px;
+  padding-top: 54px;
+  display: flex;
+  color: #1F1E25;
+}
+
+.tab__item {
+  flex-basis: 50%;
+  padding-left: 10px;
+
+  &:first-child {
+    padding-right: 109px;
+  }
+
+  &:last-child {
+    padding-top: 6px;;
+  }
+}
+
+.tab__title {
+  margin: 0;
+  margin-bottom: 29px;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 140%;
+}
+
+.tab__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tab__avantage {  
+  display: flex;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 130%;
+  margin-bottom: 15px;
+}
+
+.tab__avantage-text {
+  margin: 0;
+  padding-left: 8px;
+  white-space: pre-wrap;
+}
+
+.tab__avantage-svg {
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.tab__info {
+  margin: 0;
+  font-size: 18px;
+  line-height: 140%;
+  padding-right: 64px;
+  white-space: pre-wrap;
+}
+
+.tab__link {
+  color: inherit;
+  font-weight: 500;
+  
+	transition: opacity 0.3s ease;
+
+	&:hover,
+	&:focus {
+		opacity: 0.7;
+	}
+}
+
+.tab__button {
+  display: inline-block;
+  text-decoration: none;
+  background: #2C36F2;
+  padding: 16px 30px;
+  color: #F6F7FF;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  margin-top: 19px;
+  border-radius: 4px;
+  border: none;
+
+	transition: opacity 0.3s ease;
+  
+	&:hover,
+	&:focus {
+		opacity: 0.7;
+	}
+}
+

@@ -6,12 +6,12 @@ import SlideNear from '../slide-near/slide-near'
 
 const Slider = () => {
   return (
-    <>
+    <div className="slider">
       <h1 className="visually-hidden">ЛИГА БАНК</h1>
-      <SlideCredit />
-      <SlideStable />
-      <SlideNear />
-    </>
+      <SlideCredit classSlide={" "}  />
+      <SlideStable classSlide={" visually-hidden"} />
+      <SlideNear classSlide={" visually-hidden"} />
+    </div>
   )
 }
 
