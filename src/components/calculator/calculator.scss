@@ -18,7 +18,7 @@
 }
 
 .calculator__partition {
-  flex-basis: 52%;
+  flex-basis: 51%;
   margin-bottom: 72px;
   margin-right: 70px;
 }
@@ -42,15 +42,17 @@
   }
 
   &--proposal {
-    flex-basis: 42%;
+    flex-basis: 43%;
     margin-bottom: auto;
     padding: 60px;
+    background-color: #F6F7FF;
 
   }
 
   &--three {
     flex-basis: 70%;
     padding: 70px;
+    background-color: #F6F7FF;
   }
 }
 
@@ -62,11 +64,16 @@
   margin-bottom: 30px;
 
   &--proposal {
- 
+   margin-bottom: 40px;
+  }
+
+  &--no-credit {
+    margin-bottom: 25px;
   }
 
   &--three {
     text-align: center;
+    margin-bottom: 42px;
   }
 }
 
@@ -187,6 +194,14 @@
   line-height: 140%;
   margin-bottom: 15px;
 
+  &--date {
+    margin-bottom: 0; 
+  }
+
+  &--no-credit {
+    margin-bottom: 0;
+  }
+
   &--checkbox {
     position: relative;
     color: #1F1E25;
@@ -249,22 +264,74 @@
   display: flex;
   flex-wrap: wrap;
 
-  >div {
+  div {
     flex-basis: 45%;
+
+    &:nth-of-type(odd) {
+      margin-right: 37px;
+    }
   }
 }
 
 .calculator__dates {  
   list-style: none;
+  margin: 0;
+  margin-bottom: 30px;
+  padding: 0;
 }
 
 .calculator__date {
   display: flex;
   justify-content: space-between;
+  padding-top: 22px;
+  padding-bottom: 22px;   
+  border-bottom: 1px solid #C4C4C4;
+}
+
+.calculator__personal-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.calculator__personal {
+  flex-basis: 47%;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 140%;
+  letter-spacing: 0.03em;
+  text-align: left;
+  border: 1px solid #0A1E32;
+  background-color: #F6F7FF;
+  color: #707C87;
+  border-radius: 4px;
+  padding: 24px;
+  margin-bottom: 30px;
+  outline: none;
+
+  transition: border-color 0.3s ease;
+
+  &:first-of-type {
+    flex-basis: 100%;
+  }
+
+  &:nth-of-type(2) {
+    margin-right: 30px;
+    margin-bottom: 40px;
+  }
+
+  &:last-of-type {
+    margin-bottom: 40px;
+  }
+
+  &:hover,
+  &:focus {
+    border-color: #2C36F2;
+  }
 }
 
 .calculator__button {
-  display: inline-block;
+  display: block;
   text-decoration: none;
   background: #2C36F2;
   padding: 16px 30px;
@@ -275,6 +342,8 @@
   margin-top: 19px;
   border-radius: 4px;
   border: none;
+  margin-left: auto;
+  margin-right: auto;
 
 	transition: opacity 0.3s ease;
   

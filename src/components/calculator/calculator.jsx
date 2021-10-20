@@ -123,26 +123,41 @@ const Calculator = () => {
             </div>
           </div>
           <div  className="calculator__section calculator__section--proposal">
-            <h3 className="calculator__section-name calculator__section-name--proposal">Наше предложение</h3>
-            <div className="calculator__proposal">
-              <div>
-                <p className="calculator__text-bold">1 330 000 рублей </p>
-                <span className="calculator__label">Сумма ипотеки</span>
-              </div>
-              <div>
-                <p className="calculator__text-bold">9,40%</p>
-                <span className="calculator__label">Процентная ставка</span>
-              </div>
-              <div>
-                <p className="calculator__text-bold">27 868 рублей</p>
-                <span className="calculator__label">Ежемесячный платеж</span>
-              </div>
-              <div>
-                <p className="calculator__text-bold">61 929 рублей</p>
-                <span className="calculator__label">Необходимый доход</span>
-              </div>
-            </div>
-            <button className="calculator__button calculator__button--proposal">Оформить заявку</button>
+            { 400000 >= 500000 ? 
+              <>                
+                <h3 className="calculator__section-name calculator__section-name--proposal">
+                  Наше предложение
+                </h3>
+                <div className="calculator__proposal">
+                  <div>
+                    <p className="calculator__text-bold">1 330 000 рублей </p>
+                    <span className="calculator__label">Сумма ипотеки</span>
+                  </div>
+                  <div>
+                    <p className="calculator__text-bold">9,40%</p>
+                    <span className="calculator__label">Процентная ставка</span>
+                  </div>
+                  <div>
+                    <p className="calculator__text-bold">27 868 рублей</p>
+                    <span className="calculator__label">Ежемесячный платеж</span>
+                  </div>
+                  <div>
+                    <p className="calculator__text-bold">61 929 рублей</p>
+                    <span className="calculator__label">Необходимый доход</span>
+                  </div>
+                </div>
+                <button className="calculator__button calculator__button--proposal">Оформить заявку</button>
+              </>
+              :
+              <>                
+                <h3 className="calculator__section-name calculator__section-name--no-credit">
+                  Наш банк не выдаёт ипотечные кредиты меньше 500 000 рублей.
+                </h3>
+                <p className="calculator__label calculator__label--no-credit">
+                  Попробуйте использовать другие параметры&nbsp;для&nbsp;расчёта.
+                </p>                   
+              </>
+            }
           </div>
           <div className="calculator__section calculator__section--three">
             <h3 className="calculator__section-name calculator__section-name--three">Шаг 3. Оформление заявки</h3>
@@ -152,19 +167,19 @@ const Calculator = () => {
                   className="calculator__date"
                   key={keys + index}
                 >
-                  <p className="calculator__label">{value}</p>
+                  <p className="calculator__label calculator__label--date">{value}</p>
                   <span className="calculator__text-bold">{form[keys.toLowerCase()]}</span>
                 </li>
               ))}     
             </ul>
             <form>
-              <div>
+              <div className="calculator__personal-card">
                 <label className="visually-hidden" htmlFor="name">Фамилия Имя Отчество</label>
-                <input id="name" name="name" type="text" placeholder="ФИО" />
+                <input className="calculator__personal" id="name" name="name" type="text" placeholder="ФИО" />
                 <label className="visually-hidden" htmlFor="phone">Телефон</label>
-                <input id="phone" name="phone" type="tel" placeholder="Телефон" />
+                <input className="calculator__personal" id="phone" name="phone" type="tel" placeholder="Телефон" />
                 <label className="visually-hidden" htmlFor="email">E-mail</label>
-                <input id="email" name="email" type="email" placeholder="E-mail" />
+                <input className="calculator__personal" id="email" name="email" type="email" placeholder="E-mail" />
               </div>
               <button className="calculator__button">Отправить</button>
             </form>

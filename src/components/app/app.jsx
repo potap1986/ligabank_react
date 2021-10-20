@@ -7,6 +7,7 @@ import Slider from '../slider/slider';
 import Tabs from '../tabs/tabs';
 import Calculator from '../calculator/calculator';
 import PopupEnter from '../potup-enter/popup-enter';
+import PopupInfo from '../potup-info/popup-info';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <Footer />
 
       <PopupEnter />
+      <PopupInfo />
     </>
   );
 }
