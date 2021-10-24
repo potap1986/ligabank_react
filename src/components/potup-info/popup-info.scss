@@ -1,16 +1,21 @@
 .popup-info {
   position: fixed;
-
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  min-height: 100vh;
+  background:rgba(0, 0, 0, 0.4);
 }
 
 .popup-info__wrapper {
   position: fixed;
   padding: 60px;
   flex-basis: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  left: 0;
-  top: 0;
+  z-index: 100;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   width: 40%;
   background: #F6F7FF;
   border: none;

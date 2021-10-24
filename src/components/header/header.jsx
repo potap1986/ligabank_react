@@ -1,7 +1,10 @@
 import React from 'react';
 import './header.scss';
+import PropTypes from "prop-types";
+import { connect } from 'react-redux'
+import ActionCreator from '../../store/actions'
 
-const Header = () => {
+const Header = (props) => {
   const headerLinks = [
     {
       name: "Услуги",
@@ -44,15 +47,31 @@ const Header = () => {
             ))}
           </ul>
         </nav>          
-        <a href="ligabank.com" className="header__enter">
+        <button href="ligabank.com" className="header__enter" onClick={props.onPopupEnterOpen}>
           <svg width="20" height="22">
             <use xlinkHref="#enter"/>
           </svg>
           <span className="header__login">Войти в Интернет-банк</span>
-        </a>
+        </button>
       </div>
     </header>
   );
 };
 
-export default Header;
+Header.propTypes = {
+  visibleEnter: PropTypes.bool.isRequired,
+}
+
+const mapStateToProps = (state) => {
+	return {
+		visibleEnter: state.isPopupEnterVisible
+	}
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  onPopupEnterOpen: () => {
+    dispatch(ActionCreator.openPopupEnter());
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

@@ -1,0 +1,14 @@
+.section-slider {  
+	margin-bottom: 60px;
+	width: 100vw;
+	
+	.swiper-pagination-bullet {
+		background: #2028B6;
+		opacity: 1;
+	}
+	
+	.swiper-pagination-bullet-active {
+		background: #F6F7FF;
+		opacity: 1;
+	}
+}

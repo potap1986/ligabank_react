@@ -172,17 +172,15 @@ const Calculator = () => {
                 </li>
               ))}     
             </ul>
-            <form>
-              <div className="calculator__personal-card">
-                <label className="visually-hidden" htmlFor="name">Фамилия Имя Отчество</label>
-                <input className="calculator__personal" id="name" name="name" type="text" placeholder="ФИО" />
-                <label className="visually-hidden" htmlFor="phone">Телефон</label>
-                <input className="calculator__personal" id="phone" name="phone" type="tel" placeholder="Телефон" />
-                <label className="visually-hidden" htmlFor="email">E-mail</label>
-                <input className="calculator__personal" id="email" name="email" type="email" placeholder="E-mail" />
-              </div>
-              <button className="calculator__button">Отправить</button>
-            </form>
+            <div className="calculator__personal-card">
+              <label className="visually-hidden" htmlFor="name">Фамилия Имя Отчество</label>
+              <input className="calculator__personal" id="name" name="name" type="text" placeholder="ФИО" />
+              <label className="visually-hidden" htmlFor="phone">Телефон</label>
+              <input className="calculator__personal" id="phone" name="phone" type="tel" placeholder="Телефон" />
+              <label className="visually-hidden" htmlFor="email">E-mail</label>
+              <input className="calculator__personal" id="email" name="email" type="email" placeholder="E-mail" />
+            </div>
+            <button className="calculator__button">Отправить</button>
           </div>
         </form>
       </div>

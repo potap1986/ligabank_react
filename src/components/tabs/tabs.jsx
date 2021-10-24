@@ -1,9 +1,11 @@
 import React from 'react'
 import './tabs.scss'
 import Tab from '../tab/tab'
+import PropTypes from "prop-types";
+import ActionCreator from '../../store/actions'
+import {connect} from 'react-redux'
 
-const Tabs = () => {
-  const ACTIVE_TAB = 0
+const Tabs = (props) => {
   const tabs = [
     {
       svg: 'investment',
@@ -75,6 +77,10 @@ const Tabs = () => {
     }
   ]
 
+  const handleTab = (id) => {
+    props.onChangeActiveTab(id)
+  }
+
   return (
     <div className="tabs container">
       <div>        
@@ -83,7 +89,8 @@ const Tabs = () => {
             tabs.map((item, index) => (
               <li
                 key={item.head}  
-                className={"tabs__title" + (index === ACTIVE_TAB ? " tabs__title--active" : " ")}
+                className={"tabs__title" + (index === props.activeTab ? " tabs__title--active" : " ")}
+                onClick={() => {handleTab(index)}}
               >         
                 <svg width="34" height="33">
                   <use xlinkHref={"#" + item.svg}/>
@@ -100,7 +107,7 @@ const Tabs = () => {
               key={item.svg + id}
               item={item}
               id={id}
-              activeTab={ACTIVE_TAB} 
+              activeTab={props.activeTab} 
             />
           ))
         }
@@ -110,4 +117,16 @@ const Tabs = () => {
   )
 }
 
-export default Tabs
+const mapStateToProps = (state) => {
+	return {
+		activeTab: state.activeTab
+	}
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  onChangeActiveTab: (activeTab) => {
+    dispatch(ActionCreator.changeActiveTab(activeTab));
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Tabs)
