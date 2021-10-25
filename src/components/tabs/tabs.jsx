@@ -102,14 +102,18 @@ const Tabs = (props) => {
         </ul>
         
         {
-          tabs.map((item, id) => (
-            <Tab
-              key={item.svg + id}
-              item={item}
-              id={id}
-              activeTab={props.activeTab} 
-            />
-          ))
+
+          <Tab 
+            item = {tabs[props.activeTab]}
+          />
+          //tabs.map((item, id) => (
+          //  <Tab
+          //    key={item.svg + id}
+          //    item={item}
+          //    id={id}
+          //    activeTab={props.activeTab} 
+          //  />
+          //))
         }
 
       </div>

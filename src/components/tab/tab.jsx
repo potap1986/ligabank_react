@@ -1,9 +1,9 @@
 import React from 'react'
 import './tab.scss'
 
-const Tab = ({item, id, activeTab}) => {
+const Tab = ({item}) => {
   return (
-    <div className={"tab" + (id !== activeTab ? " visually-hidden" : " ")}>
+    <div className="tab">
       <div className="tab__item">
         <p className="tab__title"> 
           {item.title}

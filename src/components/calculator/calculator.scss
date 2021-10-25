@@ -14,7 +14,7 @@
 .calculator__form {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .calculator__partition {
@@ -53,6 +53,8 @@
     flex-basis: 70%;
     padding: 70px;
     background-color: #F6F7FF;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -331,6 +333,7 @@
 }
 
 .calculator__button {
+  cursor: pointer;
   display: block;
   text-decoration: none;
   background: #2C36F2;
