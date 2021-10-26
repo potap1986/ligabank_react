@@ -115,7 +115,6 @@ const Tabs = (props) => {
           //  />
           //))
         }
-
       </div>
     </div>
   )

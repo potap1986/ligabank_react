@@ -215,6 +215,7 @@
 .calculator__checkbox {
   + .calculator__label--checkbox::before {
     position: absolute;
+    cursor: pointer;
     left: 0;
     top: 2px;
     content: "";

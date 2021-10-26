@@ -3,7 +3,7 @@ const KeyFormDates = {
   PURPOSE: "Цель кредита",
   SUM: "Стоимость недвижимости",
   CONTRIBUTION: "Первоначальный взнос",
-  YEAR: "Срок кредитования"
+  TERM: "Срок кредитования"
 }
 
 const ActionType = {
