@@ -32,7 +32,8 @@ const creditOptions = [
         sum: 470000
       }
     ],
-    interest_rate: 9.4,
+    interest_rate: 9.4,   
+    interest_rate1: 8.4,
     percent_income: 45,
     text1: "ипотеки",
     text2: "ипотечные "
@@ -69,7 +70,10 @@ const creditOptions = [
         sum: 470000
       }
     ],
-    interest_rate: 9.4,
+    interest_rate: 16,    
+    interest_rate1: 15,
+    interest_rate2: 8.5,    
+    interest_rate3: 3.5,
     percent_income: 45,
     text1: "автокредита",
     text2: "авто"
@@ -92,7 +96,8 @@ const Calculator = () => {
     contribution: 200000,
     percent: null,
     term: null,
-    discount: null
+    discount1: false,
+    discount2: false,
   })
 
   const [proposal, changeProposal] = useState({
@@ -106,8 +111,20 @@ const Calculator = () => {
 
   const calculateProposal = (id) => {
     if (selectedOption) {      
-      const loan_amount = form.sum - form.contribution - +form.discount * creditOptions[id].checkboxes[0].sum
-      const persent_mounth = creditOptions[id].interest_rate / (12 * 100)
+      const loan_amount = form.sum - form.contribution - (id === 0 ? +form.discount1 * creditOptions[id].checkboxes[0].sum : 0)
+      let interest_rate = null
+      id === 0 
+      ? (form.persent < 15
+      ? interest_rate = creditOptions[id].interest_rate
+      : interest_rate = creditOptions[id].interest_rate1)
+      : +form.discount1 + +form.discount2 === 2 
+      ? interest_rate = creditOptions[id].interest_rate3
+      : +form.discount1 + +form.discount2 === 1 
+      ? interest_rate = creditOptions[id].interest_rate2
+      : form.sum >= 2000000 
+      ? interest_rate = creditOptions[id].interest_rate1
+      : interest_rate = creditOptions[id].interest_rate      
+      const persent_mounth = interest_rate / (12 * 100)
       const periods = form.term * 12
       const monthly_payment = loan_amount * (persent_mounth + persent_mounth / (Math.pow(1 + persent_mounth, periods) - 1))
       const required_income = monthly_payment * 100 / creditOptions[id].percent_income 
@@ -115,7 +132,7 @@ const Calculator = () => {
       changeProposal({
         ...proposal,      
         loan_amount: loan_amount,
-        interest_rate: creditOptions[id].interest_rate,
+        interest_rate: interest_rate,
         monthly_payment: Math.round(monthly_payment),
         required_income: Math.round(required_income)
       })
@@ -130,7 +147,7 @@ const Calculator = () => {
       percent: creditOptions[evt.id].percent.min,      
       contribution: (form.sum * creditOptions[evt.id].percent.min / 100),
       term: creditOptions[evt.id].term.min,
-      discount: creditOptions[evt.id].checkboxes[0].checked
+      discount1: creditOptions[evt.id].checkboxes[0].checked
     })
     calculateProposal(evt.id)
   }
@@ -141,6 +158,17 @@ const Calculator = () => {
       ...form,
       sum: evt.target.value,      
       contribution: (evt.target.value * form.percent / 100) 
+    })
+    calculateProposal(selectedOption.id)
+  }
+
+  const handleSumVary = (evt) => {
+    evt.preventDefault()
+    const sum = form.sum + (evt.target.id === "plus" ? creditOptions[selectedOption.id].sum.step : - creditOptions[selectedOption.id].sum.step)
+    changeForm({
+      ...form,
+      sum: sum,
+      contribution: (sum * form.percent / 100) 
     })
     calculateProposal(selectedOption.id)
   }
@@ -173,10 +201,18 @@ const Calculator = () => {
     calculateProposal(selectedOption.id)
   }
 
-  const handleDiscountChange = () => {
+  const handleDiscount1Change = () => {
     changeForm(prevForm => ({
       ...prevForm,
-      discount: !prevForm.discount
+      discount1: !prevForm.discount1
+    }))
+    calculateProposal(selectedOption.id)
+  }
+
+  const handleDiscount2Change = () => {
+    changeForm(prevForm => ({
+      ...prevForm,
+      discount2: !prevForm.discount2
     }))
     calculateProposal(selectedOption.id)
   }
@@ -205,13 +241,19 @@ const Calculator = () => {
                 <div className="calculator__sum">
                   <label className="calculator__label" htmlFor="sum">{creditOptions[selectedOption.id].sum.name}</label>
                   <div className="calculator__sum">       
-                    <svg className="calculator__svg calculator__svg--minus" width="16" height="2">
-                      <use xlinkHref="#minus"/>
-                    </svg>
+                    <button  
+                      className="calculator__svg calculator__svg--minus" 
+                      id="minus" 
+                      aria-label="Минус" 
+                      onClick={handleSumVary}>                      
+                    </button>
                     <input className="calculator__input" id="sum" name="sum" type="number" value={form.sum} min={creditOptions[selectedOption.id].sum.min} max={creditOptions[selectedOption.id].sum.max}  onChange={handleSumChange} />       
-                    <svg className="calculator__svg calculator__svg--plus" width="16" height="16">
-                      <use xlinkHref="#plus"/>
-                    </svg>
+                    <button 
+                      className="calculator__svg calculator__svg--plus" 
+                      id="plus"  
+                      aria-label="Плюс" 
+                      onClick={handleSumVary}>
+                    </button>
                   </div>
                   <span className="calculator__text-small">От {creditOptions[selectedOption.id].sum.min} до {creditOptions[selectedOption.id].sum.max} рублей</span>
                 </div>
@@ -231,8 +273,15 @@ const Calculator = () => {
                   </div>
                 </div>
                 <div>
-                  <input className="calculator__checkbox visually-hidden" type="checkbox"  id="discount" name="discount" checked={form.discount} onChange={handleDiscountChange} />
-                  <label className="calculator__label calculator__label--checkbox" htmlFor="discount">Использовать материнский капитал</label>
+                  <input className="calculator__checkbox visually-hidden" type="checkbox"  id="discount1" name="discount1" checked={form.discount1} onChange={handleDiscount1Change} />
+                  <label className="calculator__label calculator__label--checkbox" htmlFor="discount1">{creditOptions[selectedOption.id].checkboxes[0].name}</label>
+                  { selectedOption.id === 1 
+                  ? <>
+                      <input className="calculator__checkbox visually-hidden" type="checkbox"  id="discount2" name="discount2" checked={form.discount2} onChange={handleDiscount2Change} />
+                      <label className="calculator__label calculator__label--checkbox" htmlFor="discount2">{creditOptions[selectedOption.id].checkboxes[1].name}</label>
+                    </>
+                  : " "
+                  }
                 </div>
               </div>
               : " "
@@ -240,7 +289,7 @@ const Calculator = () => {
           </div>
           {selectedOption
             ? <div  className="calculator__section calculator__section--proposal">
-              { form.sum >= creditOptions[selectedOption.id].credit.min ? 
+              {proposal.loan_amount >= creditOptions[selectedOption.id].credit.min ? 
                 <>                
                   <h3 className="calculator__section-name calculator__section-name--proposal">
                     Наше предложение

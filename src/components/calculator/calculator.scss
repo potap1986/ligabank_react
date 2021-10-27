@@ -172,18 +172,27 @@
 
   .calculator__svg {   
     cursor: pointer;
-    position: absolute; 
+    position: absolute;
+    z-index: 100;
+    border: none;
+    background: inherit;
+    top: calc(50% - 12px);
+    width: 17px;
+    height: 17px;
+    padding: 0;
+		background-size: 100%;
+		background-repeat: no-repeat;
+		background-position: center;
 
     &--minus {
-      top: calc(50% - 2px);
       left: 24px;
+      background-image: url('../../img/minus.svg');
     }
 
     &--plus {
-      top: calc(50% - 9px);
       right: 24px;
+      background-image: url('../../img/plus.svg');
     }
-
   }
 }
 
