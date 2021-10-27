@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
 import './calculator.scss'
 import { KeyFormDates } from '../../const'
@@ -69,6 +69,8 @@ const creditOptions = [
         sum: 470000
       }
     ],
+    interest_rate: 9.4,
+    percent_income: 45,
     text1: "автокредита",
     text2: "авто"
   },
@@ -79,7 +81,8 @@ const options = [
   { value: 'car_loan', label: 'Автомобильное кредитование', id: 1 },
 ]
 
-const Calculator = () => {
+const Calculator = () => {  
+  const dates = Object.entries(KeyFormDates)
   const [selectedOption, setSelectedOption] = useState(null)
   const [visibleSectionThree, setVisibleThree] = useState(false)
   const [form, changeForm] = useState({  
@@ -98,17 +101,25 @@ const Calculator = () => {
     monthly_payment: null,
     required_income: null
   })
-  
-  const dates = Object.entries(KeyFormDates);
 
-  const calculateProposal = () => {
-    changeProposal({
-      ...proposal,      
-      loan_amount: form.sum - form.contribution - +form.discount * creditOptions[selectedOption.id].checkboxes[0].sum,
-      interest_rate: 1,
-      monthly_payment: 1,
-      required_income: 1
-    })
+  //useEffect(() => {calculateProposal(selectedOption.id)}, [form])
+
+  const calculateProposal = (id) => {
+    if (selectedOption) {      
+      const loan_amount = form.sum - form.contribution - +form.discount * creditOptions[id].checkboxes[0].sum
+      const persent_mounth = creditOptions[id].interest_rate / (12 * 100)
+      const periods = form.term * 12
+      const monthly_payment = loan_amount * (persent_mounth + persent_mounth / (Math.pow(1 + persent_mounth, periods) - 1))
+      const required_income = monthly_payment * 100 / creditOptions[id].percent_income 
+      console.log(form.term)
+      changeProposal({
+        ...proposal,      
+        loan_amount: loan_amount,
+        interest_rate: creditOptions[id].interest_rate,
+        monthly_payment: Math.round(monthly_payment),
+        required_income: Math.round(required_income)
+      })
+    }
   }
 
   const handleSelectedOption = (evt) => {
@@ -121,7 +132,7 @@ const Calculator = () => {
       term: creditOptions[evt.id].term.min,
       discount: creditOptions[evt.id].checkboxes[0].checked
     })
-    calculateProposal()
+    calculateProposal(evt.id)
   }
 
   const handleSumChange = (evt) => {
@@ -131,7 +142,7 @@ const Calculator = () => {
       sum: evt.target.value,      
       contribution: (evt.target.value * form.percent / 100) 
     })
-    calculateProposal()
+    calculateProposal(selectedOption.id)
   }
 
   const handleContributionChange = (evt) => {
@@ -140,7 +151,7 @@ const Calculator = () => {
       ...form,
       contribution: evt.target.value
     })
-    calculateProposal()
+    calculateProposal(selectedOption.id)
   }
 
   const handlePercentChange = (evt) => {
@@ -150,7 +161,7 @@ const Calculator = () => {
       percent: evt.target.value,
       contribution: (form.sum * evt.target.value / 100) 
     })
-    calculateProposal()
+    calculateProposal(selectedOption.id)
   }
 
   const handleTermChange = (evt) => {
@@ -159,7 +170,7 @@ const Calculator = () => {
       ...form,
       term: evt.target.value
     })
-    calculateProposal()
+    calculateProposal(selectedOption.id)
   }
 
   const handleDiscountChange = () => {
@@ -167,10 +178,9 @@ const Calculator = () => {
       ...prevForm,
       discount: !prevForm.discount
     }))
-    calculateProposal()
+    calculateProposal(selectedOption.id)
   }
-
-  console.log(+form.discount)
+  console.log(proposal)
 
   return (
     <div className="calculator">
@@ -213,7 +223,7 @@ const Calculator = () => {
                 </div>
                 <div className="calculator_years">
                   <label className="calculator__label" htmlFor="years">Срок кредитования</label>
-                  <input className="calculator__input" id="years" name="years" type="text" value={form.term}  min={creditOptions[selectedOption.id].term.min} max={creditOptions[selectedOption.id].term.max}  onChange={handleTermChange} />
+                  <input className="calculator__input" id="years" name="years" type="number" value={form.term}  min={creditOptions[selectedOption.id].term.min} max={creditOptions[selectedOption.id].term.max}  onChange={handleTermChange} />
                   <input className="calculator__input calculator__input--range" id="years-range" name="years-range" type="range" min={creditOptions[selectedOption.id].term.min} max={creditOptions[selectedOption.id].term.max} step={creditOptions[selectedOption.id].term.step} value={form.term}  onChange={handleTermChange} />
                   <div>
                     <span className="calculator__text-small">{creditOptions[selectedOption.id].term.min} лет</span>                  
