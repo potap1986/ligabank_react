@@ -6,6 +6,7 @@ import { customStyles } from '../../styles'
 import PropTypes from "prop-types"
 import { connect } from 'react-redux'
 import ActionCreator from '../../store/actions'
+import { formatedNumber, prependZeros } from '../../utils'
 
 const creditOptions = [
   {
@@ -93,7 +94,7 @@ const Calculator = (props) => {
   const [selectedOption, setSelectedOption] = useState(null)
   const [visibleSectionThree, setVisibleThree] = useState(false)
   const [form, changeForm] = useState({  
-    id: 10,
+    id: prependZeros(10),
     purpose: "",
     sum: 2000000,
     contribution: 200000,
@@ -180,29 +181,32 @@ const Calculator = (props) => {
   }
 
   const handleSelectedOption = (evt) => {
-    setSelectedOption(evt)
-    changeForm({
-      ...form,
-      purpose: creditOptions[evt.id].title,
-      percent: creditOptions[evt.id].percent.min,      
-      contribution: (form.sum * creditOptions[evt.id].percent.min / 100),
-      term: creditOptions[evt.id].term.min,
-      discount1: creditOptions[evt.id].checkboxes[0].checked
-    })
-    calculateProposal(evt.id)
+    return Promise.resolve()
+      .then(setSelectedOption(evt))
+      .then(changeForm({
+        ...form,
+        purpose: creditOptions[evt.id].title,
+        percent: creditOptions[evt.id].percent.min,      
+        contribution: (form.sum * creditOptions[evt.id].percent.min / 100),
+        term: creditOptions[evt.id].term.min,
+        discount1: creditOptions[evt.id].checkboxes[0].checked,        
+      }))
+      .then(() => console.log(evt))
+      .then(calculateProposal(evt.id));
   }
 
   const handleSumChange = (evt) => {
     evt.preventDefault()
-    if(evt.target.value >= creditOptions[selectedOption.id].sum.min && evt.target.value <= creditOptions[selectedOption.id].sum.max) {
+    const sum = Number(evt.target.value.replace(/[a-zа-яё\s]/gi, ''))
+    if(sum >= creditOptions[selectedOption.id].sum.min && sum <= creditOptions[selectedOption.id].sum.max) {
       evt.target.classList.remove('calculator__input--error')
     } else {
       evt.target.classList.add('calculator__input--error')
     }
     changeForm({
       ...form,
-      sum: evt.target.value,      
-      contribution: (evt.target.value * form.percent / 100) 
+      sum: sum,      
+      contribution: (sum * form.percent / 100) 
     })
     calculateProposal(selectedOption.id) 
   }
@@ -226,15 +230,16 @@ const Calculator = (props) => {
 
   const handleContributionChange = (evt) => {
     evt.preventDefault()
-    if(evt.target.value >= (creditOptions[selectedOption.id].sum.min * form.percent / 100) && evt.target.value <= (creditOptions[selectedOption.id].sum.max * form.percent / 100)) {
+    const contribution = Number(evt.target.value.replace(/[a-zа-яё\s]/gi, ''))
+    if(contribution >= (creditOptions[selectedOption.id].sum.min * form.percent / 100) && contribution <= (creditOptions[selectedOption.id].sum.max * form.percent / 100)) {
       evt.target.classList.remove('calculator__input--error')
     } else {
       evt.target.classList.add('calculator__input--error')
     }
     changeForm({
       ...form,
-      contribution: evt.target.value,
-      percent: (evt.target.value * 100 / form.sum)
+      contribution: contribution,
+      percent: (contribution * 100 / form.sum)
     })
     calculateProposal(selectedOption.id)
   }
@@ -251,7 +256,7 @@ const Calculator = (props) => {
 
   const handleTermChange = (evt) => {
     evt.preventDefault()   
-    var term = evt.target.value 
+    var term = Number(evt.target.value.replace(/[a-zа-яё\s]/gi, ''))
     changeForm({
       ...form,
       term: term
@@ -292,9 +297,9 @@ const Calculator = (props) => {
 
   const handleSendForm = (evt) => {
     evt.preventDefault() 
-    const nameInput =
-    const phoneInput =
-    const emailInput =
+    const nameInput = document.querySelector('.calculator__personal--name')
+    const phoneInput = document.querySelector('.calculator__personal--phone')
+    const emailInput = document.querySelector('.calculator__personal--email')
     if (personal_data.name.trim() === '') {
       nameInput.classList.add('calculator__personal--error')
     } else {
@@ -312,10 +317,13 @@ const Calculator = (props) => {
     } else {
       emailInput.classList.remove('calculator__personal--error')
     }
-    setLocalStorage()
-    props.onPopupInfoOpen()
+
+    if ((personal_data.email.trim() !== '') && (personal_data.phone.trim() !== '') && (personal_data.name.trim() !== '')) {
+      setLocalStorage()
+      props.onPopupInfoOpen()
+    }
   }
-  console.log(proposal)
+  console.log(String(form.sum).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1 '))
 
   return (
     <div className="calculator">
@@ -346,7 +354,11 @@ const Calculator = (props) => {
                       aria-label="Минус" 
                       onClick={handleSumVary}>                      
                     </button>
-                    <input className="calculator__input calculator__input--sum" id="sum" name="sum" type="number" value={form.sum} min={creditOptions[selectedOption.id].sum.min} max={creditOptions[selectedOption.id].sum.max}  onChange={handleSumChange} />       
+                    <input 
+                      className="calculator__input calculator__input--sum" id="sum" name="sum" type="text" value={formatedNumber(form.sum) + " рублей"} 
+                      min={creditOptions[selectedOption.id].sum.min} 
+                      max={creditOptions[selectedOption.id].sum.max} 
+                      onChange={handleSumChange} />       
                     <button 
                       className="calculator__svg calculator__svg--plus" 
                       id="plus"  
@@ -358,13 +370,13 @@ const Calculator = (props) => {
                 </div>
                 <div className="calculator_contribution">
                   <label className="calculator__label" htmlFor="contribution">Первоначальный взнос</label>
-                  <input className="calculator__input" id="contribution" name="contribution" type="number" value={form.contribution}  onChange={handleContributionChange} />
+                  <input className="calculator__input" id="contribution" name="contribution" type="text" value={formatedNumber(form.contribution) + " рублей"}  onChange={handleContributionChange} />
                   <input className="calculator__input calculator__input--range" id="contribution-range" name="contribution-range" type="range" min={creditOptions[selectedOption.id].percent.min} max="100" step={creditOptions[selectedOption.id].percent.step} value={form.percent}  onChange={handlePercentChange} />
                   <span className="calculator__text-small">{creditOptions[selectedOption.id].percent.min}%</span>
                 </div>
                 <div className="calculator_years">
                   <label className="calculator__label" htmlFor="years">Срок кредитования</label>
-                  <input className="calculator__input" id="years" name="years" type="number" value={form.term}  min={creditOptions[selectedOption.id].term.min} max={creditOptions[selectedOption.id].term.max}  onChange={handleTermChange} onBlur={handleTermOut} />
+                  <input className="calculator__input" id="years" name="years" type="text" value={form.term + " лет"}  min={creditOptions[selectedOption.id].term.min} max={creditOptions[selectedOption.id].term.max}  onChange={handleTermChange} onBlur={handleTermOut} />
                   <input className="calculator__input calculator__input--range" id="years-range" name="years-range" type="range" min={creditOptions[selectedOption.id].term.min} max={creditOptions[selectedOption.id].term.max} step={creditOptions[selectedOption.id].term.step} value={form.term}  onChange={handleTermChange} />
                   <div>
                     <span className="calculator__text-small">{creditOptions[selectedOption.id].term.min} лет</span>                  
@@ -395,19 +407,19 @@ const Calculator = (props) => {
                   </h3>
                   <div className="calculator__proposal">
                     <div>
-                      <p className="calculator__text-bold">{proposal.loan_amount}</p>
+                      <p className="calculator__text-bold">{formatedNumber(proposal.loan_amount) + " рублей"}</p>
                       <span className="calculator__label">Сумма {creditOptions[selectedOption.id].text1}</span>
                     </div>
                     <div>
-                      <p className="calculator__text-bold">{proposal.interest_rate}</p>
+                      <p className="calculator__text-bold">{proposal.interest_rate + " %"}</p>
                       <span className="calculator__label">Процентная ставка</span>
                     </div>
                     <div>
-                      <p className="calculator__text-bold">{proposal.monthly_payment}</p>
+                      <p className="calculator__text-bold">{formatedNumber(proposal.monthly_payment) + " рублей"}</p>
                       <span className="calculator__label">Ежемесячный платеж</span>
                     </div>
                     <div>
-                      <p className="calculator__text-bold">{proposal.required_income}</p>
+                      <p className="calculator__text-bold">{formatedNumber(proposal.required_income) + " рублей"}</p>
                       <span className="calculator__label">Необходимый доход</span>
                     </div>
                   </div>
@@ -423,7 +435,7 @@ const Calculator = (props) => {
                 :
                 <>                
                   <h3 className="calculator__section-name calculator__section-name--no-credit">
-                    Наш банк не выдаёт {creditOptions[selectedOption.id].text2}кредиты меньше {creditOptions[selectedOption.id].credit.min} рублей.
+                    Наш банк не выдаёт {creditOptions[selectedOption.id].text2}кредиты меньше {formatedNumber(creditOptions[selectedOption.id].credit.min)} рублей.
                   </h3>
                   <p className="calculator__label calculator__label--no-credit">
                     Попробуйте использовать другие параметры&nbsp;для&nbsp;расчёта.
@@ -443,7 +455,7 @@ const Calculator = (props) => {
                     key={keys + index}
                   >
                     <p className="calculator__label calculator__label--date">{value}</p>
-                    <span className="calculator__text-bold">{form[keys.toLowerCase()]}</span>
+                    <span className="calculator__text-bold">{formatedNumber(form[keys.toLowerCase()])}</span>
                   </li>
                 ))}     
               </ul>

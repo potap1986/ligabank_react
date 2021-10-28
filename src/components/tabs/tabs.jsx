@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import ActionCreator from '../../store/actions'
 import {connect} from 'react-redux'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore, { Autoplay, EffectFade, Pagination } from 'swiper';
+import SwiperCore, { Autoplay, EffectFade } from 'swiper';
 
 
 import "swiper/components/effect-fade/effect-fade.scss"
