@@ -1,6 +1,6 @@
 import React from 'react';
 import './header.scss';
-import PropTypes from "prop-types";
+import PropTypes from "prop-types"
 import { connect } from 'react-redux'
 import ActionCreator from '../../store/actions'
 
@@ -60,6 +60,7 @@ const Header = (props) => {
 
 Header.propTypes = {
   visibleEnter: PropTypes.bool.isRequired,
+  onPopupEnterOpen: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {

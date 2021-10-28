@@ -4,6 +4,15 @@ import Tab from '../tab/tab'
 import PropTypes from "prop-types";
 import ActionCreator from '../../store/actions'
 import {connect} from 'react-redux'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import SwiperCore, { Autoplay, EffectFade, Pagination } from 'swiper';
+
+
+import "swiper/components/effect-fade/effect-fade.scss"
+import 'swiper/swiper-bundle.min.css'
+import 'swiper/swiper.min.css'
+
+SwiperCore.use([Autoplay, EffectFade]);
 
 const Tabs = (props) => {
   const tabs = [
@@ -81,39 +90,54 @@ const Tabs = (props) => {
     props.onChangeActiveTab(id)
   }
 
+  const mediaQuery = window.matchMedia('(min-width: 1023px)')
+
   return (
     <div className="tabs container">
-      <div>        
-        <ul className="tabs__heads">
-          {
-            tabs.map((item, index) => (
-              <li
-                key={item.head}  
-                className={"tabs__title" + (index === props.activeTab ? " tabs__title--active" : " ")}
-                onClick={() => {handleTab(index)}}
-              >         
-                <svg width="34" height="33">
-                  <use xlinkHref={"#" + item.svg}/>
-                </svg>
-                <p>{item.head}</p>
-              </li>
-            ))
-          }
-        </ul>
+      <div>   
+        {  
+          mediaQuery.matches
+            ? <ul className="tabs__heads">
+              {
+                tabs.map((item, index) => (
+                  <li
+                    key={item.head}  
+                    className={"tabs__title" + (index === props.activeTab ? " tabs__title--active" : " ")}
+                    onClick={() => {handleTab(index)}}
+                  >         
+                    <svg width="34" height="33">
+                      <use xlinkHref={"#" + item.svg}/>
+                    </svg>
+                    <p>{item.head}</p>
+                  </li>
+                ))
+              }
+            </ul>
+            : " "
+        } 
         
         {
-
-          <Tab 
-            item = {tabs[props.activeTab]}
-          />
-          //tabs.map((item, id) => (
-          //  <Tab
-          //    key={item.svg + id}
-          //    item={item}
-          //    id={id}
-          //    activeTab={props.activeTab} 
-          //  />
-          //))
+          mediaQuery.matches
+            ?
+            <Tab 
+              item = {tabs[props.activeTab]}
+            />
+            : 
+            <Swiper
+              slidesPerView={1}
+              autoplay={{
+                delay: 4000,
+                disableOnInteraction: true
+              }} 
+              effect={'fade'}
+            >
+              {tabs.map((item, id) => (
+                <SwiperSlide key={item.svg + id}>
+                  <Tab                  
+                    item={item} />
+                </SwiperSlide>
+              ))}              
+            </Swiper>    
         }
       </div>
     </div>

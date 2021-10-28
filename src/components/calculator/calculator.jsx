@@ -3,6 +3,9 @@ import Select from 'react-select'
 import './calculator.scss'
 import { KeyFormDates } from '../../const'
 import { customStyles } from '../../styles'
+import PropTypes from "prop-types"
+import { connect } from 'react-redux'
+import ActionCreator from '../../store/actions'
 
 const creditOptions = [
   {
@@ -32,8 +35,8 @@ const creditOptions = [
         sum: 470000
       }
     ],
-    interest_rate: 9.4,   
-    interest_rate1: 8.4,
+    interest_rate1: 9.4,   
+    interest_rate2: 8.4,
     percent_income: 45,
     text1: "ипотеки",
     text2: "ипотечные "
@@ -70,10 +73,10 @@ const creditOptions = [
         sum: 470000
       }
     ],
-    interest_rate: 16,    
-    interest_rate1: 15,
-    interest_rate2: 8.5,    
-    interest_rate3: 3.5,
+    interest_rate1: 16,    
+    interest_rate2: 15,
+    interest_rate3: 8.5,    
+    interest_rate4: 3.5,
     percent_income: 45,
     text1: "автокредита",
     text2: "авто"
@@ -85,7 +88,7 @@ const options = [
   { value: 'car_loan', label: 'Автомобильное кредитование', id: 1 },
 ]
 
-const Calculator = () => {  
+const Calculator = (props) => {  
   const dates = Object.entries(KeyFormDates)
   const [selectedOption, setSelectedOption] = useState(null)
   const [visibleSectionThree, setVisibleThree] = useState(false)
@@ -113,20 +116,21 @@ const Calculator = () => {
     if (selectedOption) {      
       const loan_amount = form.sum - form.contribution - (id === 0 ? +form.discount1 * creditOptions[id].checkboxes[0].sum : 0)
       let interest_rate = null
+      console.log(form.percent)
       id === 0 
-      ? (form.persent < 15
-      ? interest_rate = creditOptions[id].interest_rate
-      : interest_rate = creditOptions[id].interest_rate1)
-      : +form.discount1 + +form.discount2 === 2 
-      ? interest_rate = creditOptions[id].interest_rate3
-      : +form.discount1 + +form.discount2 === 1 
-      ? interest_rate = creditOptions[id].interest_rate2
-      : form.sum >= 2000000 
+      ? (form.percent < 15
       ? interest_rate = creditOptions[id].interest_rate1
-      : interest_rate = creditOptions[id].interest_rate      
-      const persent_mounth = interest_rate / (12 * 100)
+      : interest_rate = creditOptions[id].interest_rate2)
+      : form.discount1 && form.discount2
+      ? interest_rate = creditOptions[id].interest_rate4
+      : form.discount1 || form.discount2
+      ? interest_rate = creditOptions[id].interest_rate3
+      : form.sum >= 2000000 
+      ? interest_rate = creditOptions[id].interest_rate2
+      : interest_rate = creditOptions[id].interest_rate1      
+      const percent_mounth = interest_rate / (12 * 100)
       const periods = form.term * 12
-      const monthly_payment = loan_amount * (persent_mounth + persent_mounth / (Math.pow(1 + persent_mounth, periods) - 1))
+      const monthly_payment = loan_amount * (percent_mounth + percent_mounth / (Math.pow(1 + percent_mounth, periods) - 1))
       const required_income = monthly_payment * 100 / creditOptions[id].percent_income 
       console.log(form.term)
       changeProposal({
@@ -154,17 +158,28 @@ const Calculator = () => {
 
   const handleSumChange = (evt) => {
     evt.preventDefault()
+    if(evt.target.value >= creditOptions[selectedOption.id].sum.min && evt.target.value <= creditOptions[selectedOption.id].sum.max) {
+      evt.target.classList.remove('calculator__input--error')
+    } else {
+      evt.target.classList.add('calculator__input--error')
+    }
     changeForm({
       ...form,
       sum: evt.target.value,      
       contribution: (evt.target.value * form.percent / 100) 
     })
-    calculateProposal(selectedOption.id)
+    calculateProposal(selectedOption.id) 
   }
 
   const handleSumVary = (evt) => {
     evt.preventDefault()
-    const sum = form.sum + (evt.target.id === "plus" ? creditOptions[selectedOption.id].sum.step : - creditOptions[selectedOption.id].sum.step)
+    const input_sum = document.querySelector('.calculator__input--sum')
+    const sum = form.sum + (evt.target.id === "plus" ? +1 : -1) * creditOptions[selectedOption.id].sum.step
+    if(sum >= creditOptions[selectedOption.id].sum.min && sum <= creditOptions[selectedOption.id].sum.max) {
+      input_sum.classList.remove('calculator__input--error')
+    } else {
+      input_sum.classList.add('calculator__input--error')
+    }
     changeForm({
       ...form,
       sum: sum,
@@ -175,9 +190,15 @@ const Calculator = () => {
 
   const handleContributionChange = (evt) => {
     evt.preventDefault()
+    if(evt.target.value >= (creditOptions[selectedOption.id].sum.min * form.percent / 100) && evt.target.value <= (creditOptions[selectedOption.id].sum.max * form.percent / 100)) {
+      evt.target.classList.remove('calculator__input--error')
+    } else {
+      evt.target.classList.add('calculator__input--error')
+    }
     changeForm({
       ...form,
-      contribution: evt.target.value
+      contribution: evt.target.value,
+      percent: (evt.target.value * 100 / form.sum)
     })
     calculateProposal(selectedOption.id)
   }
@@ -193,10 +214,16 @@ const Calculator = () => {
   }
 
   const handleTermChange = (evt) => {
-    evt.preventDefault()
+    evt.preventDefault()   
+    var term = evt.target.value 
+    if(term < creditOptions[selectedOption.id].term.min) {
+      term = creditOptions[selectedOption.id].term.min
+    } else if (term > creditOptions[selectedOption.id].term.max) {
+      term = creditOptions[selectedOption.id].term.max
+    }
     changeForm({
       ...form,
-      term: evt.target.value
+      term: term
     })
     calculateProposal(selectedOption.id)
   }
@@ -216,12 +243,17 @@ const Calculator = () => {
     }))
     calculateProposal(selectedOption.id)
   }
+
+  const handlePopuInfoOpen = (evt) => {
+    evt.preventDefault() 
+    props.onPopupInfoOpen()
+  }
   console.log(proposal)
 
   return (
     <div className="calculator">
       <div className="container">
-        <h2 className="calculator__title">Кредитный калькулятор</h2>
+        <h2 id="calculator" className="calculator__title">Кредитный калькулятор</h2>
         <form action="#" method="post"  className="calculator__form">
           <div className="calculator__partition">            
             <div className="calculator__section calculator__section--one">
@@ -247,7 +279,7 @@ const Calculator = () => {
                       aria-label="Минус" 
                       onClick={handleSumVary}>                      
                     </button>
-                    <input className="calculator__input" id="sum" name="sum" type="number" value={form.sum} min={creditOptions[selectedOption.id].sum.min} max={creditOptions[selectedOption.id].sum.max}  onChange={handleSumChange} />       
+                    <input className="calculator__input calculator__input--sum" id="sum" name="sum" type="number" value={form.sum} min={creditOptions[selectedOption.id].sum.min} max={creditOptions[selectedOption.id].sum.max}  onChange={handleSumChange} />       
                     <button 
                       className="calculator__svg calculator__svg--plus" 
                       id="plus"  
@@ -356,7 +388,11 @@ const Calculator = () => {
                 <label className="visually-hidden" htmlFor="email">E-mail</label>
                 <input className="calculator__personal" id="email" name="email" type="email" placeholder="E-mail" />
               </div>
-              <button className="calculator__button">Отправить</button>
+              <button 
+                className="calculator__button" 
+                onClick={handlePopuInfoOpen}>
+                Отправить
+              </button>
             </div>
             : " "
           }
@@ -366,4 +402,22 @@ const Calculator = () => {
   )
 }
 
-export default Calculator
+
+Calculator.propTypes = {
+  visibleInfo: PropTypes.bool.isRequired,
+  onPopupInfoOpen: PropTypes.func.isRequired,
+}
+
+const mapStateToProps = (state) => {
+	return {
+		visibleInfo: state.isPopupInfoVisible
+	}
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  onPopupInfoOpen: () => {
+    dispatch(ActionCreator.openPopupInfo());
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Calculator)

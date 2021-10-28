@@ -8,7 +8,7 @@ const SlideNear = () => {
         <div className="slide-near__content">
           <h2 className="slide-near__title">Лига Банк</h2>
           <p className="slide-near__text">Всегда рядом</p>
-          <a href="ligabank.com" className="slide-near__link">Найти отделение</a>
+          <a href="#map" className="slide-near__link">Найти отделение</a>
         </div>
       </div>
     </section>

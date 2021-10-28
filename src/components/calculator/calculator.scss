@@ -27,7 +27,6 @@
 
   &--one {
     margin-bottom: 40px;
-
   }
 
   &--two {
@@ -38,7 +37,6 @@
         margin-bottom: 0;
       }
     }
-
   }
 
   &--proposal {
@@ -118,6 +116,10 @@
   }
 
   transition: border-color 0.3s ease;
+
+  &--error {
+    border-color: red;
+  }
 
   &--range {
     padding: 0;

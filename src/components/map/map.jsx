@@ -5,7 +5,7 @@ const Map = () => {
   return (
     <section className="map">
       <div className="map__container container">
-        <h2 className="map__title">Отделения Лига Банка</h2>
+        <h2 id="map" className="map__title">Отделения Лига Банка</h2>
         <img src="./img/map.jpg" alt="Отделения банка на карте" />
       </div>
     </section>
