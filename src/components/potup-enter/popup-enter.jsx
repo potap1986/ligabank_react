@@ -111,7 +111,7 @@ class PopupEnter extends Component {
               </div>
               <form 
                 className="popup-enter__form"
-                //method="post"
+                method="post"
                 action="#"
               >
                 <label className="popup-enter__label" htmlFor="login">Логин</label> 

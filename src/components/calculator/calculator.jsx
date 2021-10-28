@@ -110,7 +110,43 @@ const Calculator = (props) => {
     required_income: null
   })
 
+  const [personal_data, changePersonalData] = useState({
+    name: localStorage.getItem('name') ? localStorage.getItem('name') : '',
+    phone: localStorage.getItem('phone') ? localStorage.getItem('phone') : '',
+    email: localStorage.getItem('email') ? localStorage.getItem('email') : '',
+  })
+
   //useEffect(() => {calculateProposal(selectedOption.id)}, [form])
+   
+  const handleNameChange = (evt) => {
+    evt.preventDefault()   
+    changePersonalData({
+      ...personal_data,
+      name: evt.target.value 
+    })
+  }
+  
+  const handlePhoneChange = (evt) => {
+    evt.preventDefault()   
+    changePersonalData({
+      ...personal_data,
+      phone: evt.target.value 
+    })
+  }
+
+  const handleEmailChange = (evt) => {
+    evt.preventDefault()   
+    changePersonalData({
+      ...personal_data,
+      email: evt.target.value 
+    })
+  }
+  
+  const setLocalStorage = () => {
+    localStorage.setItem('name', personal_data.name)
+    localStorage.setItem('phone', personal_data.phone)
+    localStorage.setItem('email', personal_data.email)
+  }
 
   const calculateProposal = (id) => {
     if (selectedOption) {      
@@ -138,7 +174,7 @@ const Calculator = (props) => {
         loan_amount: loan_amount,
         interest_rate: interest_rate,
         monthly_payment: Math.round(monthly_payment),
-        required_income: Math.round(required_income)
+        required_income: Math.round(required_income),
       })
     }
   }
@@ -216,6 +252,16 @@ const Calculator = (props) => {
   const handleTermChange = (evt) => {
     evt.preventDefault()   
     var term = evt.target.value 
+    changeForm({
+      ...form,
+      term: term
+    })
+    calculateProposal(selectedOption.id)
+  }
+
+  const handleTermOut = (evt) => {
+    evt.preventDefault()   
+    var term = form.term
     if(term < creditOptions[selectedOption.id].term.min) {
       term = creditOptions[selectedOption.id].term.min
     } else if (term > creditOptions[selectedOption.id].term.max) {
@@ -227,7 +273,7 @@ const Calculator = (props) => {
     })
     calculateProposal(selectedOption.id)
   }
-
+  
   const handleDiscount1Change = () => {
     changeForm(prevForm => ({
       ...prevForm,
@@ -244,8 +290,29 @@ const Calculator = (props) => {
     calculateProposal(selectedOption.id)
   }
 
-  const handlePopuInfoOpen = (evt) => {
+  const handleSendForm = (evt) => {
     evt.preventDefault() 
+    const nameInput =
+    const phoneInput =
+    const emailInput =
+    if (personal_data.name.trim() === '') {
+      nameInput.classList.add('calculator__personal--error')
+    } else {
+      nameInput.classList.remove('calculator__personal--error')
+    }
+
+    if (personal_data.phone.trim() === '') {
+      phoneInput.classList.add('calculator__personal--error')
+    } else {
+      phoneInput.classList.remove('calculator__personal--error')
+    }
+
+    if (personal_data.email.trim() === '') {
+      emailInput.classList.add('calculator__personal--error')
+    } else {
+      emailInput.classList.remove('calculator__personal--error')
+    }
+    setLocalStorage()
     props.onPopupInfoOpen()
   }
   console.log(proposal)
@@ -297,7 +364,7 @@ const Calculator = (props) => {
                 </div>
                 <div className="calculator_years">
                   <label className="calculator__label" htmlFor="years">Срок кредитования</label>
-                  <input className="calculator__input" id="years" name="years" type="number" value={form.term}  min={creditOptions[selectedOption.id].term.min} max={creditOptions[selectedOption.id].term.max}  onChange={handleTermChange} />
+                  <input className="calculator__input" id="years" name="years" type="number" value={form.term}  min={creditOptions[selectedOption.id].term.min} max={creditOptions[selectedOption.id].term.max}  onChange={handleTermChange} onBlur={handleTermOut} />
                   <input className="calculator__input calculator__input--range" id="years-range" name="years-range" type="range" min={creditOptions[selectedOption.id].term.min} max={creditOptions[selectedOption.id].term.max} step={creditOptions[selectedOption.id].term.step} value={form.term}  onChange={handleTermChange} />
                   <div>
                     <span className="calculator__text-small">{creditOptions[selectedOption.id].term.min} лет</span>                  
@@ -382,15 +449,15 @@ const Calculator = (props) => {
               </ul>
               <div className="calculator__personal-card">
                 <label className="visually-hidden" htmlFor="name">Фамилия Имя Отчество</label>
-                <input className="calculator__personal" id="name" name="name" type="text" placeholder="ФИО" />
+                <input className="calculator__personal calculator__personal--name" id="name" name="name" type="text" placeholder="ФИО" value={personal_data.name} onChange={handleNameChange} />
                 <label className="visually-hidden" htmlFor="phone">Телефон</label>
-                <input className="calculator__personal" id="phone" name="phone" type="tel" placeholder="Телефон" />
+                <input className="calculator__personal calculator__personal--phone" id="phone" name="phone" type="tel" placeholder="Телефон" value={personal_data.phone} onChange={handlePhoneChange} />
                 <label className="visually-hidden" htmlFor="email">E-mail</label>
-                <input className="calculator__personal" id="email" name="email" type="email" placeholder="E-mail" />
+                <input className="calculator__personal calculator__personal--email" id="email" name="email" type="email" placeholder="E-mail" value={personal_data.email} onChange={handleEmailChange} />
               </div>
               <button 
                 className="calculator__button" 
-                onClick={handlePopuInfoOpen}>
+                onClick={handleSendForm}>
                 Отправить
               </button>
             </div>
