@@ -1,5 +1,15 @@
 .tabs {
-  margin-bottom: 110px;
+  margin-bottom: 110px;  
+	
+	.swiper-pagination-bullet {
+		background: #2028B6;
+		opacity: 1;
+	}
+	
+	.swiper-pagination-bullet-active {
+		background: #F6F7FF;
+		opacity: 1;
+	}
 }
 
 .tabs__heads {  

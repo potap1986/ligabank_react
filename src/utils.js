@@ -14,25 +14,6 @@ var prependZeros = (str, len=4, seperator) => {
       }
       return spl.join(seperator || ' ');
   }
-};
-
-const formatedDates = (number, keys) => {
-  switch (keys) {
-    case "id":
-      ("# " + prependZeros(number));
-      break;
-    case "sum":
-      (formatedNumber(number) + " рублей");
-      break;
-    case "contribution":
-      (formatedNumber(number) + " рублей");
-      break;
-    case "term":
-      (number + " лет");
-      break;
-    default:
-      number;
-  }
 }
 
 export {formatedNumber, prependZeros}

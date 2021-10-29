@@ -7,6 +7,7 @@ import PropTypes from "prop-types"
 import { connect } from 'react-redux'
 import ActionCreator from '../../store/actions'
 import { formatedNumber, prependZeros } from '../../utils'
+import { forInStatement } from '@babel/types'
 
 const creditOptions = [
   {
@@ -94,7 +95,7 @@ const Calculator = (props) => {
   const [selectedOption, setSelectedOption] = useState(null)
   const [visibleSectionThree, setVisibleThree] = useState(false)
   const [form, changeForm] = useState({  
-    id: prependZeros(10),
+    id: 10,
     purpose: "",
     sum: 2000000,
     contribution: 200000,
@@ -153,7 +154,6 @@ const Calculator = (props) => {
     if (selectedOption) {      
       const loan_amount = form.sum - form.contribution - (id === 0 ? +form.discount1 * creditOptions[id].checkboxes[0].sum : 0)
       let interest_rate = null
-      console.log(form.percent)
       id === 0 
       ? (form.percent < 15
       ? interest_rate = creditOptions[id].interest_rate1
@@ -169,7 +169,6 @@ const Calculator = (props) => {
       const periods = form.term * 12
       const monthly_payment = loan_amount * (percent_mounth + percent_mounth / (Math.pow(1 + percent_mounth, periods) - 1))
       const required_income = monthly_payment * 100 / creditOptions[id].percent_income 
-      console.log(form.term)
       changeProposal({
         ...proposal,      
         loan_amount: loan_amount,
@@ -182,17 +181,24 @@ const Calculator = (props) => {
 
   const handleSelectedOption = (evt) => {
     return Promise.resolve()
-      .then(setSelectedOption(evt))
-      .then(changeForm({
-        ...form,
-        purpose: creditOptions[evt.id].title,
-        percent: creditOptions[evt.id].percent.min,      
-        contribution: (form.sum * creditOptions[evt.id].percent.min / 100),
-        term: creditOptions[evt.id].term.min,
-        discount1: creditOptions[evt.id].checkboxes[0].checked,        
-      }))
-      .then(() => console.log(evt))
-      .then(calculateProposal(evt.id));
+      .then(() => {
+        setSelectedOption(evt)
+        return selectedOption
+      })
+      .then(() => console.log(selectedOption))
+      .then(() => {changeForm({
+          ...form,
+          purpose: creditOptions[evt.id].title,
+          percent: creditOptions[evt.id].percent.min,      
+          contribution: (form.sum * creditOptions[evt.id].percent.min / 100),
+          term: creditOptions[evt.id].term.min,
+          discount1: creditOptions[evt.id].checkboxes[0].checked,        
+        })
+        return form
+      })
+      .then(() => console.log(form))
+      .then(calculateProposal(evt.id))
+      .then(() => console.log(proposal))
   }
 
   const handleSumChange = (evt) => {
@@ -320,10 +326,28 @@ const Calculator = (props) => {
 
     if ((personal_data.email.trim() !== '') && (personal_data.phone.trim() !== '') && (personal_data.name.trim() !== '')) {
       setLocalStorage()
+      
+      setSelectedOption(null)
+      setVisibleThree(false)
+      changeForm({  
+        id: form.id + 1,
+        purpose: "",
+        sum: 2000000,
+        contribution: 200000,
+        percent: null,
+        term: null,
+        discount1: false,
+        discount2: false,
+      })
+      changeProposal({
+        loan_amount: null,
+        interest_rate: null,
+        monthly_payment: null,
+        required_income: null
+      })
       props.onPopupInfoOpen()
     }
   }
-  console.log(String(form.sum).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1 '))
 
   return (
     <div className="calculator">
@@ -455,7 +479,17 @@ const Calculator = (props) => {
                     key={keys + index}
                   >
                     <p className="calculator__label calculator__label--date">{value}</p>
-                    <span className="calculator__text-bold">{formatedNumber(form[keys.toLowerCase()])}</span>
+                    <span className="calculator__text-bold">
+                      {
+                        {
+                          "id": "№ " + prependZeros(form[keys.toLowerCase()]),
+                          "sum": formatedNumber(form[keys.toLowerCase()]) + " рублей",
+                          "purpose": form[keys.toLowerCase()],
+                          "contribution": form[keys.toLowerCase()] + " рублей",
+                          "term": form[keys.toLowerCase()] + " лет",
+                        } [keys.toLowerCase()]
+                      }
+                    </span>
                   </li>
                 ))}     
               </ul>

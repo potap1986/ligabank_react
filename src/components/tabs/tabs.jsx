@@ -5,14 +5,15 @@ import PropTypes from "prop-types";
 import ActionCreator from '../../store/actions'
 import {connect} from 'react-redux'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore, { Autoplay, EffectFade } from 'swiper';
+import SwiperCore, { Autoplay, EffectFade, Pagination  } from 'swiper';
 
 
 import "swiper/components/effect-fade/effect-fade.scss"
+import "swiper/components/pagination/pagination.scss"
 import 'swiper/swiper-bundle.min.css'
 import 'swiper/swiper.min.css'
 
-SwiperCore.use([Autoplay, EffectFade]);
+SwiperCore.use([Autoplay, Pagination, EffectFade]);
 
 const Tabs = (props) => {
   const tabs = [
@@ -129,6 +130,7 @@ const Tabs = (props) => {
                 delay: 4000,
                 disableOnInteraction: true
               }} 
+              pagination={{ clickable: true }}
               effect={'fade'}
             >
               {tabs.map((item, id) => (

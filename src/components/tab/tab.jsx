@@ -33,8 +33,12 @@ const Tab = ({item}) => {
           : null
         }
       </div>
-      <div className="tab__item">
-        <img className="tab__image" src={item.image} alt={item.head}/>       
+      <div className="tab__item">        
+        <picture>
+          <source media="(min-width: 1024px)" srcset={item.image} />
+          <source media="(min-width: 768px)" srcset={item.imageTablet} />
+          <img className="tab__image" src={item.imageMobile} alt={item.head} />
+        </picture>  
       </div>
     </div>
   )
