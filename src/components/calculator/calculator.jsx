@@ -209,7 +209,7 @@ const Calculator = (props) => {
 
   const handleSumChange = (evt) => {
     evt.preventDefault()
-    const sum = Number(evt.target.value.replace(/[a-zа-яё\s]/gi, ''))
+    const sum = Number(evt.target.value.replace(/\D+/g,""))
     if(sum >= creditOptions[selectedOption.id].sum.min && sum <= creditOptions[selectedOption.id].sum.max) {
       evt.target.classList.remove('calculator__input--error')
     } else {
@@ -240,7 +240,7 @@ const Calculator = (props) => {
 
   const handleContributionChange = (evt) => {
     evt.preventDefault()
-    const contribution = Number(evt.target.value.replace(/[a-zа-яё\s]/gi, ''))
+    const contribution = Number(evt.target.value.replace(/\D+/g,""))
     if(contribution >= (form.sum * creditOptions[selectedOption.id].percent.min / 100) && contribution <= (form.sum - creditOptions[selectedOption.id].credit.min)) {
       evt.target.classList.remove('calculator__input--error')
     } else {
@@ -255,7 +255,7 @@ const Calculator = (props) => {
 
   const handleContributionOut = (evt) => {
     evt.preventDefault()   
-    let contribution = Number(evt.target.value.replace(/[a-zа-яё\s]/gi, ''))
+    let contribution = Number(evt.target.value.replace(/\D+/g,""))
     if(contribution < (form.sum * creditOptions[selectedOption.id].percent.min / 100)) {
       contribution = (form.sum * creditOptions[selectedOption.id].percent.min / 100)
       evt.target.classList.remove('calculator__input--error')
@@ -287,7 +287,7 @@ const Calculator = (props) => {
 
   const handleTermChange = (evt) => {
     evt.preventDefault()   
-    var term = Number(evt.target.value.replace(/[a-zа-яё\s]/gi, ''))
+    var term = Number(evt.target.value.replace(/\D+/g,""))
     changeForm({
       ...form,
       term: term
