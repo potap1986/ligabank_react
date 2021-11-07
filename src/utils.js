@@ -1,4 +1,17 @@
-const formatedNumber = (number) => String(Math.round(number))
+const formatedNumber = (num) => {
+  let number = String(Math.round(num));
+  let result = ""
+  const gapSize = 3
+  
+  console.log(num);
+  while (number.length > 0) 
+  {
+    result =  number.slice(-gapSize) + " " + result;
+    number = number.slice(0, -gapSize)
+  }
+
+  return result
+}
 
 var prependZeros = (str, len=4, seperator) => {
   if (typeof str === 'number' || Number(str)) {
