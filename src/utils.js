@@ -2,8 +2,7 @@ const formatedNumber = (num) => {
   let number = String(Math.round(num));
   let result = ""
   const gapSize = 3
-  
-  console.log(num);
+
   while (number.length > 0) 
   {
     result =  number.slice(-gapSize) + " " + result;
