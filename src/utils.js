@@ -1,4 +1,4 @@
-const formatedNumber = (number) => String(Math.round(number)).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1 ')
+const formatedNumber = (number) => String(Math.round(number))
 
 var prependZeros = (str, len=4, seperator) => {
   if (typeof str === 'number' || Number(str)) {
