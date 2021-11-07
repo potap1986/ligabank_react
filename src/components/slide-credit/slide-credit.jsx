@@ -10,9 +10,6 @@ const SlideCredit = () => {
           <p className="slide-credit__text">Кредиты на любой случай</p>
           <a href="#calculator" className="slide-credit__link">Расcчитать кредит</a>
         </div>
-        <div className="slide-credit__picture">
-          <img src="img/cards.png" width="398" height="240" alt="Карта банка" />
-        </div>
       </div>
     </section>
   );  

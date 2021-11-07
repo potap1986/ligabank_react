@@ -24,6 +24,11 @@ class PopupEnter extends Component {
   
   handleLoginChange = (evt) => {
     evt.preventDefault()   
+    const loginInput = document.querySelector('.popup-enter__input--login');
+    
+    if (this.state.login.trim() !== '') {
+      loginInput.classList.remove('popup-enter__input--error')
+    }
     this.setState({
       login: evt.target.value 
     })
@@ -31,6 +36,10 @@ class PopupEnter extends Component {
   
   handlePasswordChange = (evt) => {
     evt.preventDefault()   
+    const passwordInput = document.querySelector('.popup-enter__input--password');
+    if (this.state.password.trim() !== '') {
+      passwordInput.classList.remove('popup-enter__input--error')
+    }
     this.setState({
       password: evt.target.value 
     })
@@ -120,6 +129,7 @@ class PopupEnter extends Component {
                 <div className="popup-enter__password">
                   <input className="popup-enter__input popup-enter__input--password" type="password" name="password" placeholder="" id="password"  onChange={this.handlePasswordChange} value={this.state.password}/>
                   <button  
+                    type="button"
                     className="popup-enter__private"
                     onMouseDown={this.handlePrivate} 
                     onMouseUp={this.handlePrivate} 
@@ -130,8 +140,10 @@ class PopupEnter extends Component {
                     </svg>
                   </button> 
                 </div>
-                <a  className="popup-enter__link" href="liga_bank.com">Забыли пароль?</a>
-                <button  className="popup-enter__button" onClick={this.handleLogin.bind(this)}>Войти</button>
+                <div className="popup-enter__footer">                  
+                  <a className="popup-enter__link" href="liga_bank.com">Забыли пароль?</a>
+                  <button type="submit" className="popup-enter__button" onClick={this.handleLogin.bind(this)}>Войти</button>
+                </div>
               </form>
             </div>
           </ScrollLock>

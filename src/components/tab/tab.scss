@@ -4,18 +4,61 @@
   padding-top: 54px;
   display: flex;
   color: #1F1E25;
+
+  @media (max-width: 1023px) {
+    padding: 47px 34px;
+    padding-top: 55px;
+    padding-bottom: 56px;
+  }
+
+  @media (max-width: 767px) {
+    display: block;
+    padding: 54px 5px;
+    padding-bottom: 52px;
+
+    background-image: url("../../img/check-white.svg");
+    background-size: 28%;
+    background-repeat: no-repeat;
+    background-position: right 39%;
+  }
 }
 
 .tab__item {
   flex-basis: 50%;
   padding-left: 10px;
 
+  @media (max-width: 1023px) {
+    flex-basis: 55%;
+  }
+
+  @media (max-width: 767px) {}
+
   &:first-child {
     padding-right: 109px;
+
+    @media (max-width: 1023px) {
+      padding-right: 23px;
+    }
+
+    @media (max-width: 767px) {
+      padding-right: 10px;
+    }
   }
 
   &:last-child {
-    padding-top: 6px;;
+    padding-top: 6px;
+    padding-right: 82px;
+
+    @media (max-width: 1023px) {
+      flex-basis: 44%;
+      padding-top: 0;
+      padding-right: 0;
+    }
+
+    @media (max-width: 767px) {
+      float: left;
+      display: none;
+    }
   }
 }
 
@@ -25,31 +68,73 @@
   font-weight: 500;
   font-size: 22px;
   line-height: 140%;
+
+  @media (max-width: 1023px) {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 140%;
+    margin-bottom: 25px;
+  }
+
+  @media (max-width: 767px) {
+    font-size: 16px;
+    line-height: 140%;
+    margin-bottom: 20px;
+  }
 }
 
 .tab__list {
   margin: 0;
   padding: 0;
   list-style: none;
+
+  @media (max-width: 1023px) {}
+
+  @media (max-width: 767px) {
+    padding-right: 40px;
+  }
 }
 
-.tab__avantage {  
+.tab__avantage {
   display: flex;
   font-weight: normal;
   font-size: 18px;
   line-height: 130%;
   margin-bottom: 15px;
+
+  @media (max-width: 1023px) {
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 130%;
+  }
+
+  @media (max-width: 767px) {
+    font-size: 14px;
+    line-height: 130%;
+    margin-bottom: 13px;
+  }
 }
 
 .tab__avantage-text {
   margin: 0;
   padding-left: 8px;
   white-space: pre-wrap;
+
+  @media (max-width: 1023px) {}
+
+  @media (max-width: 767px) {}
 }
 
 .tab__avantage-svg {
   flex-shrink: 0;
   margin-top: 5px;
+
+  @media (max-width: 1023px) {}
+
+  @media (max-width: 767px) {
+    width: 8px;
+    height: 8px;
+  }
 }
 
 .tab__info {
@@ -58,18 +143,34 @@
   line-height: 140%;
   padding-right: 64px;
   white-space: pre-wrap;
+
+  @media (max-width: 1023px) {
+    font-size: 16px;
+    line-height: 140%;
+  }
+
+  @media (max-width: 767px) {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 140%;
+    padding-right: 26px;
+  }
 }
 
 .tab__link {
   color: inherit;
   font-weight: 500;
-  
-	transition: opacity 0.3s ease;
 
-	&:hover,
-	&:focus {
-		opacity: 0.7;
-	}
+  transition: opacity 0.3s ease;
+
+  @media (max-width: 1023px) {}
+
+  @media (max-width: 767px) {}
+
+  &:hover,
+  &:focus {
+    opacity: 0.7;
+  }
 }
 
 .tab__button {
@@ -83,13 +184,26 @@
   line-height: 19px;
   margin-top: 19px;
   border-radius: 4px;
+
+  text-align: center;
   border: none;
 
-	transition: opacity 0.3s ease;
-  
-	&:hover,
-	&:focus {
-		opacity: 0.7;
-	}
-}
+  transition: opacity 0.3s ease;
 
+  @media (max-width: 1023px) {
+    margin-top: 15px;
+  }
+
+  @media (max-width: 767px) {
+    margin-top: 12px;
+    width: 100%;
+    font-size: 14px;
+    line-height: 16px;
+    padding: 14px 82px;
+  }
+
+  &:hover,
+  &:focus {
+    opacity: 0.7;
+  }
+}

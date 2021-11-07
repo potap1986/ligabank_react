@@ -32,12 +32,17 @@ const customStyles = {
     lineHeight: '140%',
     border: '1px solid #1F1E25',
     borderRadius: 4,
-    padding: 20,
+    padding: 12,
     background: state.menuIsOpen ? `url('../../img/select-rotate.svg')` : `url('../../img/select.svg')`,
     backgroundRepeat: 'no-repeat',
     backgroundPosition: '97% center',
   
-    transition: 'border-color 0.3s ease'
+    transition: 'border-color 0.3s ease',
+    
+    '@media (max-width: 767px)': {
+      padding: '12px 4px',
+      backgroundPosition: '95% center',
+    }
   }),
   singleValue: (provided, state) => {
     const opacity = state.isDisabled ? 0.5 : 1;

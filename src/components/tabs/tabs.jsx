@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './tabs.scss'
 import Tab from '../tab/tab'
 import PropTypes from "prop-types";
@@ -75,7 +75,7 @@ const Tabs = (props) => {
       title: 'Лига Банк — это огромное количество онлайн-сервисов для вашего удобства',
       advantages: [
         'Мобильный банк,                                          который всегда под рукой',
-        'Приложение Лига-проездной позволит    вам оплачивать билеты по всему миру'
+        'Приложение Лига-проездной позволит           вам оплачивать билеты по всему миру'
       ],
       image: '../img/online.jpg',
       imageTablet: '../img/online-tablet.jpg',
@@ -87,63 +87,73 @@ const Tabs = (props) => {
     }
   ]
 
+  
+  const [tabsVisible, setTabsVisible] = useState(window.matchMedia('(min-width: 1024px)').matches ? true : false)
+
   const handleTab = (id) => {
     props.onChangeActiveTab(id)
   }
 
-  const mediaQuery = window.matchMedia('(min-width: 1023px)')
+  const mediaQuery = window.matchMedia('(min-width: 1024px)')
+
+  mediaQuery.addListener(() => {
+    if (mediaQuery.matches) {
+      setTabsVisible(true)
+    } else {
+      setTabsVisible(false)
+    }
+  })
 
   return (
     <div className="tabs container">
-      <div>   
-        {  
-          mediaQuery.matches
-            ? <ul className="tabs__heads">
-              {
-                tabs.map((item, index) => (
-                  <li
-                    key={item.head}  
-                    className={"tabs__title" + (index === props.activeTab ? " tabs__title--active" : " ")}
-                    onClick={() => {handleTab(index)}}
-                  >         
-                    <svg width="34" height="33">
-                      <use xlinkHref={"#" + item.svg}/>
-                    </svg>
-                    <p>{item.head}</p>
-                  </li>
-                ))
-              }
-            </ul>
-            : " "
-        } 
-        
-        {
-          mediaQuery.matches
-            ?
-            <Tab 
-              item = {tabs[props.activeTab]}
-            />
-            : 
-            <Swiper
-              slidesPerView={1}
-              autoplay={{
-                delay: 4000,
-                disableOnInteraction: true
-              }} 
-              pagination={{ clickable: true }}
-              effect={'fade'}
-            >
-              {tabs.map((item, id) => (
-                <SwiperSlide key={item.svg + id}>
-                  <Tab                  
-                    item={item} />
-                </SwiperSlide>
-              ))}              
-            </Swiper>    
-        }
-      </div>
+      {  
+        tabsVisible
+          ? <ul className="tabs__heads">
+            {
+              tabs.map((item, index) => (
+                <li
+                  key={item.head}  
+                  className={"tabs__title" + (index === props.activeTab ? " tabs__title--active" : " ")}
+                  onClick={() => {handleTab(index)}}
+                >         
+                  <svg width="34" height="33">
+                    <use xlinkHref={"#" + item.svg}/>
+                  </svg>
+                  <p>{item.head}</p>
+                </li>
+              ))
+            }
+          </ul>
+          : " "
+      } 
+      
+      {
+        tabsVisible
+          ?
+          <Tab 
+            item = {tabs[props.activeTab]}
+          />
+          : 
+          <Swiper
+            slidesPerView={1}
+            pagination
+            effect={'fade'}
+          >
+            {tabs.map((item, id) => (
+              <SwiperSlide key={item.svg + id}>
+                <Tab                  
+                  item={item} />
+              </SwiperSlide>
+            ))}              
+          </Swiper>    
+      }
     </div>
   )
+}
+
+Tabs.propTypes = {
+	activeTab: PropTypes.number.isRequired,
+	onChangeActiveTab: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {

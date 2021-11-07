@@ -1,12 +1,46 @@
 .map {
   margin-bottom: 110px;
+
+  @media (max-width: 1023px) {
+    margin-bottom: 76px;
+  }
+
+  @media (max-width: 767px) {
+    margin-bottom: 56px;
+  }
+
+}
+
+img {
+  width: 100%;
+  object-fit: contain;
 }
 
 .map__title {
-  color: #1F1E25;  
+  color: #1F1E25;
   font-weight: bold;
   font-size: 41px;
   line-height: 140%;
   margin: 0;
-  margin-bottom: 70px;
+  margin-bottom: 51px;
+
+  @media (max-width: 1023px) {
+    font-size: 32px;
+    line-height: 140%;
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: 767px) {
+    font-size: 22px;
+    line-height: 140%;
+    margin-bottom: 26px;
+  }
+
+}
+
+.map__picture {
+  @media (max-width: 767px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }

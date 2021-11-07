@@ -1,14 +1,43 @@
-.section-slider {  
+.section-slider {
 	margin-bottom: 60px;
 	width: 100vw;
-	
+
+	@media (max-width: 1023px) {
+		margin-bottom: 0;
+	}
+
+	@media (max-width: 767px) {}
+
+	.swiper-slide {
+		align-self: stretch;
+		height: auto;
+
+		&>* {
+			height: 100%;
+		}
+	}
+
+	.swiper-pagination {
+		bottom: 36px;
+
+		@media (max-width: 767px) {
+			bottom: 6px;
+		}
+	}
+
 	.swiper-pagination-bullet {
 		background: #2028B6;
 		opacity: 1;
+
+		@media (max-width: 767px) {
+			width: 6px;
+			height: 6px;
+			margin: 0 3px;
+		}
 	}
-	
+
 	.swiper-pagination-bullet-active {
-		background: #F6F7FF;
+		background: #E0E0E0;
 		opacity: 1;
 	}
 }
