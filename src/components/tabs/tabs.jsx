@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './tabs.scss'
 import Tab from '../tab/tab'
 import PropTypes from "prop-types";
@@ -86,23 +86,62 @@ const Tabs = (props) => {
       }
     }
   ]
-
   
-  const [tabsVisible, setTabsVisible] = useState(window.matchMedia('(min-width: 1024px)').matches ? true : false)
-
+  const mediaQueryMobile = window.matchMedia('(max-width: 767px)')
+  const mediaQuery = window.matchMedia('(max-width: 1023px)')
+  const [tabsVisible, setTabsVisible] = useState(mediaQuery.matches ? false : true)
+  const [backgroundMobileVisible, setVisible] = useState(mediaQueryMobile.matches ? true : false)
+    
   const handleTab = (id) => {
     props.onChangeActiveTab(id)
   }
+  
+  // mediaQueryMobile.addListener(() => {
+  //   if (mediaQueryMobile.matches) {
+  //     setVisible(false)
+  //   } else {
+  //     setVisible(true)
+  //   }
+  // })
 
-  const mediaQuery = window.matchMedia('(min-width: 1024px)')
+  // mediaQuery.addListener(() => {
+  //   if (mediaQuery.matches) {
+  //     setTabsVisible(true)
+  //   } else {
+  //     setTabsVisible(false)
+  //   }
+  // })
 
-  mediaQuery.addListener(() => {
+  const handleWindowSizeChange = () => {
     if (mediaQuery.matches) {
-      setTabsVisible(true)
-    } else {
       setTabsVisible(false)
+    } else {      
+      setTabsVisible(true)
+      setVisible(false)
     }
-  })
+  };
+
+  const handleWindowSizeChangeMobile = () => {
+    if (mediaQueryMobile.matches) {
+      setVisible(true)
+    } else {
+      setVisible(false)
+    }
+  };
+
+  useEffect(() => {
+    mediaQuery.addListener(handleWindowSizeChange);
+    return () => {
+      mediaQuery.removeListener(handleWindowSizeChange);
+    };
+  }, []);
+  
+  useEffect(() => {
+    mediaQueryMobile.addListener(handleWindowSizeChangeMobile);
+    return () => {
+      mediaQueryMobile.removeListener(handleWindowSizeChangeMobile);
+    };
+  }, []);
 
   return (
     <div className="tabs container">
@@ -132,6 +171,7 @@ const Tabs = (props) => {
           ?
           <Tab 
             item = {tabs[props.activeTab]}
+            backgroundMobileVisible={backgroundMobileVisible}
           />
           : 
           <Swiper
@@ -142,7 +182,8 @@ const Tabs = (props) => {
             {tabs.map((item, id) => (
               <SwiperSlide key={item.svg + id}>
                 <Tab                  
-                  item={item} />
+                  item={item}
+                  backgroundMobileVisible={backgroundMobileVisible} />
               </SwiperSlide>
             ))}              
           </Swiper>    

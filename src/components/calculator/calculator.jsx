@@ -37,9 +37,9 @@ const creditOptions = [
         sum: 470000
       }
     ],
-    interest_rate1: 9.4,   
-    interest_rate2: 8.4,
-    percent_income: 45,
+    interestRate1: 9.4,   
+    interestRate2: 8.4,
+    percentIncome: 45,
     text1: "ипотеки",
     text2: "ипотечные "
   },
@@ -76,11 +76,11 @@ const creditOptions = [
       }
     ],
     threshold: 2000000, 
-    interest_rate1: 16,    
-    interest_rate2: 15,
-    interest_rate3: 8.5,    
-    interest_rate4: 3.5,
-    percent_income: 45,
+    interestRate1: 16,    
+    interestRate2: 15,
+    interestRate3: 8.5,    
+    interestRate4: 3.5,
+    percentIncome: 45,
     text1: "автокредита",
     text2: "авто"
   },
@@ -108,13 +108,13 @@ const Calculator = (props) => {
   })
 
   const [proposal, changeProposal] = useState({
-    loan_amount: null,
-    interest_rate: null,
-    monthly_payment: null,
-    required_income: null
+    loanAmount: null,
+    interestRate: null,
+    monthlyPayment: null,
+    requiredIncome: null
   })
 
-  const [personal_data, changePersonalData] = useState({
+  const [personalData, changePersonalData] = useState({
     name: localStorage.getItem('name') ? localStorage.getItem('name') : '',
     phone: localStorage.getItem('phone') ? localStorage.getItem('phone') : '',
     email: localStorage.getItem('email') ? localStorage.getItem('email') : '',
@@ -127,25 +127,25 @@ const Calculator = (props) => {
       let interestRate = null
       id === 0 
       ? (form.percent < 15
-      ? interestRate = creditOptions[id].interest_rate1
-      : interestRate = creditOptions[id].interest_rate2)
+      ? interestRate = creditOptions[id].interestRate1
+      : interestRate = creditOptions[id].interestRate2)
       : form.discount1 && form.discount2
-      ? interestRate = creditOptions[id].interest_rate4
+      ? interestRate = creditOptions[id].interestRate4
       : form.discount1 || form.discount2
-      ? interestRate = creditOptions[id].interest_rate3
+      ? interestRate = creditOptions[id].interestRate3
       : form.sum >= creditOptions[1].threshold
-      ? interestRate = creditOptions[id].interest_rate2
-      : interestRate = creditOptions[id].interest_rate1      
+      ? interestRate = creditOptions[id].interestRate2
+      : interestRate = creditOptions[id].interestRate1      
       const percentMounth = interestRate / (12 * 100)
       const periods = form.term * 12
       const monthlyPayment = loanAmount * (percentMounth + percentMounth / (Math.pow(1 + percentMounth, periods) - 1))
-      const requiredIncome = monthlyPayment * 100 / creditOptions[id].percent_income 
+      const requiredIncome = monthlyPayment * 100 / creditOptions[id].percentIncome 
       changeProposal((prevProposal) => ({
         ...prevProposal,      
-        loan_amount: loanAmount,
-        interest_rate: interestRate,
-        monthly_payment: (monthlyPayment),
-        required_income: (requiredIncome),
+        loanAmount: loanAmount,
+        interestRate: interestRate,
+        monthlyPayment: (monthlyPayment),
+        requiredIncome: (requiredIncome),
       }))
     }
   
@@ -156,22 +156,22 @@ const Calculator = (props) => {
   const handleNameChange = (evt) => {
     evt.preventDefault()   
     const nameInput = document.querySelector('.calculator__personal--name')
-    if (personal_data.name.trim() !== '') {
+    if (personalData.name.trim() !== '') {
       nameInput.classList.remove('calculator__personal--error')
     } 
     changePersonalData({
-      ...personal_data,
+      ...personalData,
       name: evt.target.value 
     })
   }
   
   const handlePhoneChange = (evt) => {
     const phoneInput = document.querySelector('.calculator__personal--phone')
-    if (personal_data.phone.trim() === '') {
+    if (personalData.phone.trim() === '') {
       phoneInput.classList.remove('calculator__personal--error')
     }
     changePersonalData({
-      ...personal_data,
+      ...personalData,
       phone: evt
     })
   }
@@ -179,19 +179,19 @@ const Calculator = (props) => {
   const handleEmailChange = (evt) => {
     evt.preventDefault()   
     const emailInput = document.querySelector('.calculator__personal--email')
-    if (personal_data.email.trim() === '') {
+    if (personalData.email.trim() === '') {
       emailInput.classList.remove('calculator__personal--error')
     }
     changePersonalData({
-      ...personal_data,
+      ...personalData,
       email: evt.target.value 
     })
   }
   
   const setLocalStorage = () => {
-    localStorage.setItem('name', personal_data.name)
-    localStorage.setItem('phone', personal_data.phone)
-    localStorage.setItem('email', personal_data.email)
+    localStorage.setItem('name', personalData.name)
+    localStorage.setItem('phone', personalData.phone)
+    localStorage.setItem('email', personalData.email)
   }
 
   const handleSelectedOption = (evt) => {
@@ -327,25 +327,25 @@ const Calculator = (props) => {
     const nameInput = document.querySelector('.calculator__personal--name')
     const phoneInput = document.querySelector('.calculator__personal--phone')
     const emailInput = document.querySelector('.calculator__personal--email')
-    if (personal_data.name.trim() === '') {
+    if (personalData.name.trim() === '') {
       nameInput.classList.add('calculator__personal--error')
     } else {
       nameInput.classList.remove('calculator__personal--error')
     }
 
-    if (personal_data.phone.trim() === '') {
+    if (personalData.phone.trim() === '') {
       phoneInput.classList.add('calculator__personal--error')
     } else {
       phoneInput.classList.remove('calculator__personal--error')
     }
 
-    if (personal_data.email.trim() === '') {
+    if (personalData.email.trim() === '') {
       emailInput.classList.add('calculator__personal--error')
     } else {
       emailInput.classList.remove('calculator__personal--error')
     }
 
-    if ((personal_data.email.trim() !== '') && (personal_data.phone.trim() !== '') && (personal_data.name.trim() !== '')) {
+    if ((personalData.email.trim() !== '') && (personalData.phone.trim() !== '') && (personalData.name.trim() !== '')) {
       setLocalStorage()
       
       setSelectedOption(null)
@@ -362,10 +362,10 @@ const Calculator = (props) => {
         selectedOption: 0
       })
       changeProposal({
-        loan_amount: null,
-        interest_rate: null,
-        monthly_payment: null,
-        required_income: null
+        loanAmount: null,
+        interestRate: null,
+        monthlyPayment: null,
+        requiredIncome: null
       })
       props.onPopupInfoOpen()
     }
@@ -379,7 +379,8 @@ const Calculator = (props) => {
           <div className="calculator__partition">            
             <div className="calculator__section calculator__section--one">
               <h3 className="calculator__section-name">Шаг 1. Цель кредита</h3>
-              <Select                
+              <Select              
+                //menuIsOpen={true}  
                 classNamePrefix="calculator__select"
                 styles={customStyles}
                 placeholder="Выберите цель кредита"
@@ -430,7 +431,7 @@ const Calculator = (props) => {
                   <input className="calculator__input calculator__input--range" id="contribution-range" name="contribution-range" type="range" min={creditOptions[selectedOption.id].percent.min} max="100" step={creditOptions[selectedOption.id].percent.step} value={form.percent}  onChange={handlePercentChange} />
                   <span className="calculator__text-small">{creditOptions[selectedOption.id].percent.min}%</span>
                 </div>
-                <div className="calculator_years">
+                <div className="calculator__years">
                   <label className="calculator__label" htmlFor="years">Срок кредитования</label>
                   <input className="calculator__input" id="years" name="years" type="text" value={`${form.term} ${pluralize(form.term)}`}  min={creditOptions[selectedOption.id].term.min} max={creditOptions[selectedOption.id].term.max}  onChange={handleTermChange} onBlur={handleTermOut} />
                   <input className="calculator__input calculator__input--range" id="years-range" name="years-range" type="range" min={creditOptions[selectedOption.id].term.min} max={creditOptions[selectedOption.id].term.max} step={creditOptions[selectedOption.id].term.step} value={form.term}  onChange={handleTermChange} />
@@ -456,26 +457,26 @@ const Calculator = (props) => {
           </div>
           {selectedOption
             ? <div  className="calculator__section calculator__section--proposal">
-              {proposal.loan_amount >= creditOptions[selectedOption.id].credit.min ? 
+              {proposal.loanAmount >= creditOptions[selectedOption.id].credit.min ? 
                 <>                
                   <h3 className="calculator__section-name calculator__section-name--proposal">
                     Наше предложение
                   </h3>
                   <div className="calculator__proposal">
                     <div>
-                      <p className="calculator__text-bold">{formatedNumber(proposal.loan_amount) + " рублей"}</p>
+                      <p className="calculator__text-bold">{formatedNumber(proposal.loanAmount) + " рублей"}</p>
                       <span className="calculator__label">Сумма {creditOptions[selectedOption.id].text1}</span>
                     </div>
                     <div>
-                      <p className="calculator__text-bold">{proposal.interest_rate.toFixed(2) + " %"}</p>
+                      <p className="calculator__text-bold">{proposal.interestRate.toFixed(2) + " %"}</p>
                       <span className="calculator__label">Процентная ставка</span>
                     </div>
                     <div>
-                      <p className="calculator__text-bold">{formatedNumber(proposal.monthly_payment) + " рублей"}</p>
+                      <p className="calculator__text-bold">{formatedNumber(proposal.monthlyPayment) + " рублей"}</p>
                       <span className="calculator__label">Ежемесячный платеж</span>
                     </div>
                     <div>
-                      <p className="calculator__text-bold">{formatedNumber(proposal.required_income) + " рублей"}</p>
+                      <p className="calculator__text-bold">{formatedNumber(proposal.requiredIncome) + " рублей"}</p>
                       <span className="calculator__label">Необходимый доход</span>
                     </div>
                   </div>
@@ -528,11 +529,11 @@ const Calculator = (props) => {
               </ul>
               <div className="calculator__personal-card">
                 <label className="visually-hidden" htmlFor="name">Фамилия Имя Отчество</label>
-                <input className="calculator__personal calculator__personal--name" id="name" name="name" type="text" placeholder="ФИО" value={personal_data.name} onChange={handleNameChange} />
+                <input className="calculator__personal calculator__personal--name" id="name" name="name" type="text" placeholder="ФИО" value={personalData.name} onChange={handleNameChange} />
                 <label className="visually-hidden" htmlFor="phone">Телефон</label>
-                <IMaskInput  className="calculator__personal calculator__personal--phone" id="phone" name="phone" type="tel" placeholder="Телефон" value={personal_data.phone} onAccept={handlePhoneChange} mask="+{7}(000)000-00-00" />
+                <IMaskInput  className="calculator__personal calculator__personal--phone" id="phone" name="phone" type="tel" placeholder="Телефон" value={personalData.phone} onAccept={handlePhoneChange} mask="+{7}(000)000-00-00" />
                 <label className="visually-hidden" htmlFor="email">E-mail</label>
-                <input className="calculator__personal calculator__personal--email" id="email" name="email" type="email" placeholder="E-mail" value={personal_data.email} onChange={handleEmailChange} />
+                <input className="calculator__personal calculator__personal--email" id="email" name="email" type="email" placeholder="E-mail" value={personalData.email} onChange={handleEmailChange} />
               </div>
               <button 
                 type="submit"

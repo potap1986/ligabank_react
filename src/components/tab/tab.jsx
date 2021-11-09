@@ -1,21 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from "prop-types"
 import './tab.scss'
 
-const Tab = ({item}) => {
+const Tab = ({item, backgroundMobileVisible}) => {
   const backgroundMobile = {backgroundImage: "url(" + item.imageMobile + ")"}
-  const [backgroundMobileVisible, setVisible] = useState(window.matchMedia('(min-width: 768px)').matches ? null : backgroundMobile)
-  const mediaQuery = window.matchMedia('(min-width: 768px)')
-  mediaQuery.addListener(() => {
-    if (mediaQuery.matches) {
-      setVisible(null)
-    } else {
-      setVisible(backgroundMobile)
-    }
-  })
   return (
     <div
-      style={backgroundMobileVisible}
+      style={backgroundMobileVisible ? backgroundMobile : null}
       className="tab">
       <div className="tab__item">
         <p className="tab__title"> 
@@ -74,7 +65,8 @@ Tab.propTypes = {
       name: PropTypes.string,
       href: PropTypes.string
     })
-  }).isRequired
+  }).isRequired,
+  backgroundMobileVisible: PropTypes.bool.isRequired
 }
 
 export default Tab

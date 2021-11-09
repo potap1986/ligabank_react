@@ -10,6 +10,7 @@ const customStyles = {
   }),  
   menu: (provided, state) => ({
     ...provided,
+    position: 'relative',
     border: '1px solid #1F1E25',
     boxShadow: 'none',
     marginTop: -1,
