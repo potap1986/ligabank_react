@@ -45,8 +45,11 @@
 	}
 
 	@media (max-width: 767px) {
-		width: 71%;
 		padding-left: 0;
+	}
+
+	@media (max-width: 382px) {
+		width: 71%;
 	}
 }
 

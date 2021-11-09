@@ -1,52 +1,61 @@
-import React from "react"
+import React, { Component } from "react"
 import './popup-info.scss'
 import FocusTrap from 'focus-trap-react'
 import ScrollLock from 'react-scrolllock'
 import PropTypes from "prop-types";
 import ActionCreator from '../../store/actions'
 import {connect} from 'react-redux'
-
-const PopupInfo = (props) => {
-
-  const escPressHandler = (evt) => {
+class PopupInfo extends Component  {
+  constructor(props) {
+    super(props);
+    this.escPressHandler = this.escPressHandler.bind(this);
+  }
+  
+  escPressHandler(evt) {
     if (evt.key === 'Escape') {
-      props.onPopupInfoClose();
-      document.removeEventListener('keydown', escPressHandler);
+      this.props.onPopupInfoClose();
     }
   }
 
-  document.addEventListener('keydown', escPressHandler);
+  componentWillUnmount () {
+    document.removeEventListener('keydown', this.escPressHandler);
+  }
 
-  return ( 
-    <FocusTrap>
-      <div className="popup-info"
-        onClick={(evt) => {
-          if (!evt.target.closest('.popup-info__wrapper')) {
-            props.onPopupInfoClose();
-        }}}
-      >
-        <ScrollLock>
-          <div className="popup-info__wrapper">
-            <button 
-              className="popup-info__close"
-              onClick={props.onPopupInfoClose}
-              aria-label="Закрыть окно"
-            >            
-              <svg width="16" height="16">
-                <use xlinkHref="#close"></use>
-              </svg>
-            </button>
-            <p className="popup-info__head">
-              Спасибо за обращение в наш банк.
-            </p>
-            <p className="popup-info__text">
-              Наш менеджер скоро свяжется с вами по&nbsp;указанному&nbsp;номеру телефона.
-            </p>
-          </div>
-        </ScrollLock>
-      </div>
-    </FocusTrap>
-  )
+  render() {
+    
+    document.addEventListener('keydown', this.escPressHandler);
+
+    return ( 
+      <FocusTrap>
+        <div className="popup-info"
+          onClick={(evt) => {
+            if (!evt.target.closest('.popup-info__wrapper')) {
+              this.props.onPopupInfoClose();
+          }}}
+        >
+          <ScrollLock>
+            <div className="popup-info__wrapper">
+              <button 
+                className="popup-info__close"
+                onClick={this.props.onPopupInfoClose}
+                aria-label="Закрыть окно"
+              >            
+                <svg width="16" height="16">
+                  <use xlinkHref="#close"></use>
+                </svg>
+              </button>
+              <p className="popup-info__head">
+                Спасибо за обращение в наш банк.
+              </p>
+              <p className="popup-info__text">
+                Наш менеджер скоро свяжется с вами по&nbsp;указанному&nbsp;номеру телефона.
+              </p>
+            </div>
+          </ScrollLock>
+        </div>
+      </FocusTrap>
+    )
+  }
 }
 
 PopupInfo.propTypes = {

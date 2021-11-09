@@ -14,4 +14,10 @@ const ActionType = {
   CHANGE_ACTIVE_TAB: 'changeActiveTab'
 }
 
-export {KeyFormDates, ActionType}
+const SLIDER_DELAY = 4000
+
+const PERCENT_LIMIT = 15
+
+const MONTH_IN_YEAR = 12
+
+export {KeyFormDates, ActionType, SLIDER_DELAY, PERCENT_LIMIT, MONTH_IN_YEAR}

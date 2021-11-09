@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './header.scss';
 import PropTypes from "prop-types"
 import { connect } from 'react-redux'
@@ -24,7 +24,21 @@ const Header = (props) => {
       href: "ligabank.com"
     }
   ]
+  
+  const mediaQueryMobile = window.matchMedia('(max-width: 767px)')
   const [visibleMenu, setMenuVisible] = useState(false)
+  const handleWindowSizeChangeMobile = () => {
+    if (!mediaQueryMobile.matches) {
+      setMenuVisible(false)
+    }
+  };
+
+  useEffect(() => {
+    mediaQueryMobile.addListener(handleWindowSizeChangeMobile);
+    return () => {
+      mediaQueryMobile.removeListener(handleWindowSizeChangeMobile);
+    };
+  });
 
   return (
     <header className={"header" + (visibleMenu ? " header--menu-open" : "")}>

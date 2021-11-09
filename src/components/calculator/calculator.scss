@@ -83,7 +83,7 @@
   }
 
   &--proposal {
-    flex-basis: 43%;
+    flex-basis: calc(49% - 70px);
     margin-bottom: auto;
     margin-top: 5px;
     padding: 55px 60px;
@@ -438,11 +438,11 @@
   }
 
   div {
-    flex-basis: 40%;
+    width: calc(53% - 49px);
     margin-bottom: 23px;
 
     @media (max-width: 1023px) {
-      flex-basis: 32%;
+      width: 32%;
     }
 
     @media (max-width: 767px) {
@@ -450,12 +450,12 @@
     }
 
     &:nth-of-type(odd) {
-      flex-basis: 47%;
+      width: 47%;
       margin-right: 49px;
 
       @media (max-width: 1023px) {
         margin-right: 46px;
-        flex-basis: 32%;
+        width: 32%;
       }
 
       @media (max-width: 767px) {

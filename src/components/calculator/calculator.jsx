@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
 import './calculator.scss'
-import { KeyFormDates } from '../../const'
+import { KeyFormDates, MONTH_IN_YEAR, PERCENT_LIMIT } from '../../const'
 import { customStyles } from '../../styles'
 import PropTypes from "prop-types"
 import { IMaskInput } from 'react-imask'
@@ -126,7 +126,7 @@ const Calculator = (props) => {
       const loanAmount = form.sum - form.contribution - (id === 0 ? +form.discount1 * creditOptions[id].checkboxes[0].sum : 0)
       let interestRate = null
       id === 0 
-      ? (form.percent < 15
+      ? (form.percent < PERCENT_LIMIT
       ? interestRate = creditOptions[id].interestRate1
       : interestRate = creditOptions[id].interestRate2)
       : form.discount1 && form.discount2
@@ -136,8 +136,8 @@ const Calculator = (props) => {
       : form.sum >= creditOptions[1].threshold
       ? interestRate = creditOptions[id].interestRate2
       : interestRate = creditOptions[id].interestRate1      
-      const percentMounth = interestRate / (12 * 100)
-      const periods = form.term * 12
+      const percentMounth = interestRate / (MONTH_IN_YEAR * 100)
+      const periods = form.term * MONTH_IN_YEAR
       const monthlyPayment = loanAmount * (percentMounth + percentMounth / (Math.pow(1 + percentMounth, periods) - 1))
       const requiredIncome = monthlyPayment * 100 / creditOptions[id].percentIncome 
       changeProposal((prevProposal) => ({
@@ -380,7 +380,6 @@ const Calculator = (props) => {
             <div className="calculator__section calculator__section--one">
               <h3 className="calculator__section-name">Шаг 1. Цель кредита</h3>
               <Select              
-                //menuIsOpen={true}  
                 classNamePrefix="calculator__select"
                 styles={customStyles}
                 placeholder="Выберите цель кредита"

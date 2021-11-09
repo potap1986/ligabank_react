@@ -95,22 +95,6 @@ const Tabs = (props) => {
   const handleTab = (id) => {
     props.onChangeActiveTab(id)
   }
-  
-  // mediaQueryMobile.addListener(() => {
-  //   if (mediaQueryMobile.matches) {
-  //     setVisible(false)
-  //   } else {
-  //     setVisible(true)
-  //   }
-  // })
-
-  // mediaQuery.addListener(() => {
-  //   if (mediaQuery.matches) {
-  //     setTabsVisible(true)
-  //   } else {
-  //     setTabsVisible(false)
-  //   }
-  // })
 
   const handleWindowSizeChange = () => {
     if (mediaQuery.matches) {
@@ -134,14 +118,14 @@ const Tabs = (props) => {
     return () => {
       mediaQuery.removeListener(handleWindowSizeChange);
     };
-  }, []);
+  });
   
   useEffect(() => {
     mediaQueryMobile.addListener(handleWindowSizeChangeMobile);
     return () => {
       mediaQueryMobile.removeListener(handleWindowSizeChangeMobile);
     };
-  }, []);
+  });
 
   return (
     <div className="tabs container">

@@ -7,6 +7,11 @@ import ActionCreator from '../../store/actions'
 import {connect} from 'react-redux'
 
 class PopupEnter extends Component {
+  constructor(props) {
+    super(props);
+    this.escPressHandler = this.escPressHandler.bind(this);
+  }
+
   state = {        
     login: localStorage.getItem('login') ? localStorage.getItem('login') : '',
     password: localStorage.getItem('password') ? localStorage.getItem('password') : '',
@@ -74,21 +79,25 @@ class PopupEnter extends Component {
     localStorage.setItem('login', this.state.login)
     localStorage.setItem('password', this.state.password)
   }
+    
+  escPressHandler(evt) {
+    if (evt.key === 'Escape') {
+      this.props.onPopupEnterClose();
+    }
+  }
+
 
   componentDidMount() {
     this.loginInput.focus();
   }
 
+  componentWillUnmount () {
+    document.removeEventListener('keydown', this.escPressHandler);
+  }
+
   render () {
     
-    const escPressHandler = (evt) => {
-      if (evt.key === 'Escape') {
-        this.props.onPopupEnterClose();
-        document.removeEventListener('keydown', escPressHandler);
-      }
-    }
-
-    document.addEventListener('keydown', escPressHandler);
+    document.addEventListener('keydown', this.escPressHandler);
 
     return ( 
       <FocusTrap>

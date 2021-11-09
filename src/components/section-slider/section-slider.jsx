@@ -11,6 +11,7 @@ import "swiper/components/effect-fade/effect-fade.scss"
 import "swiper/components/pagination/pagination.scss"
 import 'swiper/swiper-bundle.min.css'
 import 'swiper/swiper.min.css'
+import { SLIDER_DELAY } from '../../const'
 
 SwiperCore.use([Autoplay, Pagination, EffectFade]);
 
@@ -21,7 +22,7 @@ const SectionSlider = () => {
       <Swiper
         slidesPerView={1}
         autoplay={{
-          delay: 4000,
+          delay: SLIDER_DELAY,
           disableOnInteraction: true
         }} 
         effect={'fade'}

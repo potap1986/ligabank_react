@@ -15,7 +15,7 @@ const Tab = ({item, backgroundMobileVisible}) => {
         <ul className="tab__list">
           {item.advantages.map((advantage, index) => (
             <li
-              key={advantage + index}
+              key={advantage}
               className="tab__avantage"
             >              
               <svg className="tab__avantage-svg" width="13" height="10">
@@ -38,9 +38,9 @@ const Tab = ({item, backgroundMobileVisible}) => {
         }
       </div>    
       <picture className="tab__item">
-        <source media="(min-width: 1024px)" srcSet={item.image} />
-        <source media="(min-width: 768px)" srcSet={item.imageTablet} />
-        <img src={item.imageMobile} alt={item.head} />
+        <source media="(max-width: 767px)" srcSet={item.imageMobile} />
+        <source media="(max-width: 1023px)" srcSet={item.imageTablet} />
+        <img src={item.image} alt={item.head} />
       </picture>  
     </div>
   )

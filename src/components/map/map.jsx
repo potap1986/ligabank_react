@@ -9,9 +9,9 @@ const Map = () => {
       </div>
       <div className="map__picture container">  
         <picture>
-          <source media="(min-width: 1024px)" srcSet="./img/map.jpg" />
-          <source media="(min-width: 768px)" srcSet="./img/map-tablet.jpg" />
-          <img src="./img/map-mobile.jpg" alt="Отделения банка на карте" />
+          <source media="(max-width: 767px)" srcSet="./img/map-mobile.jpg" />
+          <source media="(max-width: 1023px)" srcSet="./img/map-tablet.jpg" />
+          <img src="./img/map.jpg" alt="Отделения банка на карте" />
         </picture>  
       </div>
     </section>
