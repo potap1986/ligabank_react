@@ -109,51 +109,54 @@ class PopupEnter extends Component {
         >
           <ScrollLock>
             <div className="popup-enter__wrapper">
-              <div className="popup-enter__head">
-                <svg className="popup-enter__logo" width="30" height="27">
-                  <use xlinkHref="#logo"/>
-                </svg>
-                <div className="popup-enter__title">
-                  <p>ЛИГА Банк</p>
-                  <span>интернет-банк</span>
-                </div>
-                <button 
-                  className="popup-enter__close"
-                  onClick={this.props.onPopupEnterClose}
-                  aria-label="Закрыть окно"
-                >            
-                  <svg width="16" height="16">
-                    <use xlinkHref="#close"></use>
+              <div className="popup-enter__scroll">
+                <div className="popup-enter__head">
+                  <svg className="popup-enter__logo" width="30" height="27">
+                    <use xlinkHref="#logo"/>
                   </svg>
-                </button>
-              </div>
-              <form 
-                className="popup-enter__form"
-                method="post"
-                action="#"
-              >
-                <label className="popup-enter__label" htmlFor="login">Логин</label> 
-                <input className="popup-enter__input popup-enter__input--login" type="text" name="login" id="login" placeholder="" onChange={this.handleLoginChange} value={this.state.login} ref={(input) => {this.loginInput = input}}/> 
-                <label className="popup-enter__label" htmlFor="password">Пароль</label>
-                <div className="popup-enter__password">
-                  <input className="popup-enter__input popup-enter__input--password" type="password" name="password" placeholder="" id="password"  onChange={this.handlePasswordChange} value={this.state.password}/>
-                  <button  
-                    type="button"
-                    className="popup-enter__private"
-                    onMouseDown={this.handlePrivate} 
-                    onMouseUp={this.handlePrivate} 
-                    aria-label="Показать пароль"
-                  >
-                    <svg width="22" height="12">
-                      <use xlinkHref="#private"></use>
+                  <div className="popup-enter__title">
+                    <p>ЛИГА Банк</p>
+                    <span>интернет-банк</span>
+                  </div>
+                  <button 
+                    className="popup-enter__close"
+                    onClick={this.props.onPopupEnterClose}
+                    aria-label="Закрыть окно"
+                  >            
+                    <svg width="16" height="16">
+                      <use xlinkHref="#close"></use>
                     </svg>
-                  </button> 
+                  </button>
                 </div>
-                <div className="popup-enter__footer">                  
-                  <a className="popup-enter__link" href="liga_bank.com">Забыли пароль?</a>
-                  <button type="submit" className="popup-enter__button" onClick={this.handleLogin.bind(this)}>Войти</button>
-                </div>
-              </form>
+                <form 
+                  className="popup-enter__form"
+                  method="post"
+                  action="#"
+                >
+                  <label className="popup-enter__label" htmlFor="login">Логин</label> 
+                  <input className="popup-enter__input popup-enter__input--login" type="text" name="login" id="login" placeholder="" onChange={this.handleLoginChange} value={this.state.login} ref={(input) => {this.loginInput = input}}/> 
+                  <label className="popup-enter__label" htmlFor="password">Пароль</label>
+                  <div className="popup-enter__password">
+                    <input className="popup-enter__input popup-enter__input--password" type="password" name="password" placeholder="" id="password"  onChange={this.handlePasswordChange} value={this.state.password}/>
+                    <button  
+                      type="button"
+                      className="popup-enter__private"
+                      onMouseDown={this.handlePrivate} 
+                      onMouseUp={this.handlePrivate} 
+                      aria-label="Показать пароль"
+                    >
+                      <svg width="22" height="12">
+                        <use xlinkHref="#private"></use>
+                      </svg>
+                    </button> 
+                  </div>
+                  <div className="popup-enter__footer">                  
+                    <a className="popup-enter__link" href="liga_bank.com">Забыли пароль?</a>
+                    <button type="submit" className="popup-enter__button" onClick={this.handleLogin.bind(this)}>Войти</button>
+                  </div>
+                </form>
+
+              </div>              
             </div>
           </ScrollLock>
         </div>

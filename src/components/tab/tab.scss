@@ -152,8 +152,12 @@
     font-weight: normal;
     font-size: 14px;
     line-height: 140%;
-    padding-right: 8vw;
+    padding-right: 25vw;
     margin-top: 29px;
+  }
+
+  @media (max-width: 367px) {
+    padding-right: 8vw;
   }
 }
 

@@ -143,6 +143,7 @@
 	line-height: 19px;
 	color: #1F1E25;
 	transition: opacity 0.3s ease;
+	display: inline-block;
 	margin-top: 5px;
 	margin-bottom: 5px;
 
@@ -238,6 +239,7 @@
 }
 
 .header__login {
+	white-space: nowrap;
 
 	@media (max-width: 1023px) {
 		display: none;

@@ -94,6 +94,7 @@ const options = [
 const Calculator = (props) => {  
   const dates = Object.entries(KeyFormDates)
   const [selectedOption, setSelectedOption] = useState(null)
+  const [visibleProposal, setVisibleProposal] = useState(null)
   const [visibleSectionThree, setVisibleThree] = useState(false)
   const [form, changeForm] = useState({  
     id: 10,
@@ -428,7 +429,7 @@ const Calculator = (props) => {
                     </span>
                   </div>
                   <input className="calculator__input calculator__input--range" id="contribution-range" name="contribution-range" type="range" min={creditOptions[selectedOption.id].percent.min} max="100" step={creditOptions[selectedOption.id].percent.step} value={form.percent}  onChange={handlePercentChange} />
-                  <span className="calculator__text-small">{creditOptions[selectedOption.id].percent.min}%</span>
+                  <span className="calculator__text-small">{Math.round(form.percent)}%</span>
                 </div>
                 <div className="calculator__years">
                   <label className="calculator__label" htmlFor="years">Срок кредитования</label>
@@ -456,7 +457,7 @@ const Calculator = (props) => {
           </div>
           {selectedOption
             ? <div  className="calculator__section calculator__section--proposal">
-              {proposal.loanAmount >= creditOptions[selectedOption.id].credit.min ? 
+              {proposal.loanAmount >= creditOptions[selectedOption.id].credit.min ?                 
                 <>                
                   <h3 className="calculator__section-name calculator__section-name--proposal">
                     Наше предложение
@@ -490,7 +491,7 @@ const Calculator = (props) => {
                   </button>
                 </>
                 :
-                <>                
+                <>  
                   <h3 className="calculator__section-name calculator__section-name--no-credit">
                     Наш банк не выдаёт {creditOptions[selectedOption.id].text2}кредиты меньше {formatedNumber(creditOptions[selectedOption.id].credit.min)} рублей.
                   </h3>

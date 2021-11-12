@@ -14,6 +14,19 @@
 img {
   width: 100%;
   object-fit: contain;
+
+  @media (max-width: 767px) {
+    width: 70vw;
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+  }
+
+  @media (max-width: 520px) {
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+  }
 }
 
 .map__title {
