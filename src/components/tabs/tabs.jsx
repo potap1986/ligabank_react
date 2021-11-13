@@ -138,6 +138,12 @@ const Tabs = (props) => {
                   key={item.head}  
                   className={"tabs__title" + (index === props.activeTab ? " tabs__title--active" : " ")}
                   onClick={() => {handleTab(index)}}
+                  tabIndex = "0"
+                  onKeyDown={(evt) => {
+                    if (evt.code === 'Enter') {
+                      handleTab(index)
+                    }
+                  }}
                 >         
                   <svg width="34" height="33">
                     <use xlinkHref={"#" + item.svg}/>

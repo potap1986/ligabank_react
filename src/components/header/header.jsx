@@ -50,10 +50,9 @@ const Header = (props) => {
             </svg>
           </button>
           <a href="ligabank.com" className="header__logo">
-            <svg width="28" height="25">
+            <svg width="150" height="25">
               <use xlinkHref="#logo" />
             </svg>
-            <span className="header__logo-text"> ЛИГА Банк</span>
           </a>
           <nav className="header__nav">
             <ul className="header__nav-list">

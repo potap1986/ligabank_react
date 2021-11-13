@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
 import './calculator.scss'
-import { KeyFormDates, MONTH_IN_YEAR, PERCENT_LIMIT } from '../../const'
+import { AmountLength, KeyFormDates, MONTH_IN_YEAR, PERCENT_LIMIT, PHONE_LENGTH } from '../../const'
 import { customStyles } from '../../styles'
 import PropTypes from "prop-types"
 import { IMaskInput } from 'react-imask'
@@ -94,7 +94,6 @@ const options = [
 const Calculator = (props) => {  
   const dates = Object.entries(KeyFormDates)
   const [selectedOption, setSelectedOption] = useState(null)
-  const [visibleProposal, setVisibleProposal] = useState(null)
   const [visibleSectionThree, setVisibleThree] = useState(false)
   const [form, changeForm] = useState({  
     id: 10,
@@ -208,29 +207,55 @@ const Calculator = (props) => {
     })
   }
 
-  const handleSumChange = (evt) => {
-    evt.preventDefault()
-    const sum = Number(evt.target.value.replace(/\D+/g,""))
+  const handleSumChange = (value, mask) => {
+    let sum = value;
+    const inputWrapper = mask.el.input.closest('.calculator__input');
     if(sum >= creditOptions[selectedOption.id].sum.min && sum <= creditOptions[selectedOption.id].sum.max) {
-      evt.target.classList.remove('calculator__input--error')
+      inputWrapper.classList.remove('calculator__input--error')
     } else {
-      evt.target.classList.add('calculator__input--error')
+      inputWrapper.classList.add('calculator__input--error')
+      if (sum.toString().length > AmountLength.MAX) {
+        sum = +sum.toString().substring(0, AmountLength.MAX); 
+      } 
+      if (sum.toString().length < AmountLength.MIN) {
+        sum = form.sum 
+      } 
     }
     changeForm({
       ...form,
       sum: sum,      
-      contribution:  (sum * form.percent / 100) 
+      contribution:  Math.round(sum * form.percent / 100) 
+    })
+  }
+
+  
+  const handleSumOut = () => {
+    let sum = form.sum
+    if(sum < creditOptions[selectedOption.id].sum.min) {
+      sum = creditOptions[selectedOption.id].sum.min
+    } 
+    if(sum > creditOptions[selectedOption.id].sum.max) {
+      sum = creditOptions[selectedOption.id].sum.max
+    }
+    changeForm({
+      ...form,
+      sum: sum,      
+      contribution:  Math.round(sum * form.percent / 100) 
     })
   }
 
   const handleSumVary = (evt) => {
     evt.preventDefault()
     const inputSum = document.querySelector('.calculator__input--sum')
-    const sum = form.sum + (evt.target.id === "plus" ? 1 : -1) * creditOptions[selectedOption.id].sum.step
+    let sum = +form.sum + (evt.target.id === "plus" ? 1 : -1) * creditOptions[selectedOption.id].sum.step
     if(sum >= creditOptions[selectedOption.id].sum.min && sum <= creditOptions[selectedOption.id].sum.max) {
       inputSum.classList.remove('calculator__input--error')
     } else {
-      inputSum.classList.add('calculator__input--error')
+      if (sum < creditOptions[selectedOption.id].sum.min) {
+        sum = creditOptions[selectedOption.id].sum.min
+      } else {
+        sum = creditOptions[selectedOption.id].sum.max
+      }
     }
     changeForm({
       ...form,
@@ -239,13 +264,13 @@ const Calculator = (props) => {
     })
   }
 
-  const handleContributionChange = (evt) => {
-    evt.preventDefault()
-    const contribution = Number(evt.target.value.replace(/\D+/g,""))
+  const handleContributionChange = (value, mask) => {
+    let contribution = value;
+    const inputWrapper = mask.el.input.closest('.calculator__input');
     if(contribution >= (form.sum * creditOptions[selectedOption.id].percent.min / 100) && contribution <= (form.sum - creditOptions[selectedOption.id].credit.min)) {
-      evt.target.classList.remove('calculator__input--error')
+      inputWrapper.classList.remove('calculator__input--error')
     } else {
-      evt.target.classList.add('calculator__input--error')
+      inputWrapper.classList.add('calculator__input--error')
     }
     changeForm({
       ...form,
@@ -254,26 +279,23 @@ const Calculator = (props) => {
     })
   }
 
-  const handleContributionOut = (evt) => {
-    evt.preventDefault()   
-    let contribution = Number(evt.target.value.replace(/\D+/g,""))
+  const handleContributionOut = () => {
+    let contribution = form.contribution
     if(contribution < (form.sum * creditOptions[selectedOption.id].percent.min / 100)) {
       contribution = (form.sum * creditOptions[selectedOption.id].percent.min / 100)
-      evt.target.classList.remove('calculator__input--error')
     } 
     if(contribution > (form.sum - creditOptions[selectedOption.id].credit.min)) {
       contribution = (form.sum - creditOptions[selectedOption.id].credit.min)
-      evt.target.classList.remove('calculator__input--error')
     }
     changeForm({
       ...form,
-      contribution: contribution,
+      contribution: Math.round(contribution),
       percent: (contribution * 100 / form.sum)
     })
   }
 
   const handlePercentChange = (evt) => {
-    const contribution = (form.sum * evt.target.value / 100) 
+    const contribution = Math.round(form.sum * evt.target.value / 100) 
     const inputContribution = document.querySelector('.calculator__input--contribution')
     if(contribution > (form.sum * creditOptions[selectedOption.id].percent.min / 100) && contribution < (form.sum - creditOptions[selectedOption.id].credit.min)) {
       inputContribution.classList.remove('calculator__input--error')
@@ -334,7 +356,7 @@ const Calculator = (props) => {
       nameInput.classList.remove('calculator__personal--error')
     }
 
-    if (personalData.phone.trim() === '') {
+    if (personalData.phone.length < PHONE_LENGTH) {
       phoneInput.classList.add('calculator__personal--error')
     } else {
       phoneInput.classList.remove('calculator__personal--error')
@@ -346,7 +368,7 @@ const Calculator = (props) => {
       emailInput.classList.remove('calculator__personal--error')
     }
 
-    if ((personalData.email.trim() !== '') && (personalData.phone.trim() !== '') && (personalData.name.trim() !== '')) {
+    if ((personalData.email.trim() !== '') && (personalData.phone.trim().length === PHONE_LENGTH) && (personalData.name.trim() !== '')) {
       setLocalStorage()
       
       setSelectedOption(null)
@@ -402,11 +424,25 @@ const Calculator = (props) => {
                       aria-label="Минус" 
                       onClick={handleSumVary}>                      
                     </button>
-                    <input 
-                      className="calculator__input calculator__input--sum" id="sum" name="sum" type="text" value={formatedNumber(form.sum) + " рублей"} 
-                      min={creditOptions[selectedOption.id].sum.min} 
-                      max={creditOptions[selectedOption.id].sum.max} 
-                      onChange={handleSumChange} />       
+                    <IMaskInput className="calculator__input calculator__input--sum" id="sum" name="sum" type="text"
+                      value={form.sum + " рублей"}  
+                      onAccept={handleSumChange} 
+                      onBlur={handleSumOut}
+                      unmask={true}
+                      mask={[
+                        { mask: '' },
+                        {
+                          mask: 'num рублей',
+                          lazy: false,
+                          blocks: {
+                            num: {
+                                mask: Number,
+                                thousandsSeparator: ' ',
+                            }
+                          }
+                        }
+                      ]}
+                    />   
                     <span className="calculator__input-error">
                       Некорректное значение
                     </span>
@@ -423,7 +459,25 @@ const Calculator = (props) => {
                 <div className="calculator__contribution">
                   <div className="calculator__input-wrapper">
                     <label className="calculator__label" htmlFor="contribution">Первоначальный взнос</label>
-                    <input className="calculator__input calculator__input--contribution" id="contribution" name="contribution" type="text" value={formatedNumber(form.contribution) + " рублей"}  onChange={handleContributionChange} onBlur={handleContributionOut} />
+                    <IMaskInput className="calculator__input calculator__input--contribution" id="contribution" name="contribution" type="text" 
+                      value={form.contribution + " рублей"}  
+                      onAccept={handleContributionChange} 
+                      onBlur={handleContributionOut} 
+                      unmask={true}
+                      mask={[
+                        { mask: '' },
+                        {
+                          mask: 'num рублей',
+                          lazy: false,
+                          blocks: {
+                            num: {
+                                mask: Number,
+                                thousandsSeparator: ' ',
+                            }
+                          }
+                        }
+                      ]}
+                    />
                     <span className="calculator__input-error">
                       Некорректное значение
                     </span>
@@ -434,18 +488,18 @@ const Calculator = (props) => {
                 <div className="calculator__years">
                   <label className="calculator__label" htmlFor="years">Срок кредитования</label>
                   <input className="calculator__input" id="years" name="years" type="text" value={`${form.term} ${pluralize(form.term)}`}  min={creditOptions[selectedOption.id].term.min} max={creditOptions[selectedOption.id].term.max}  onChange={handleTermChange} onBlur={handleTermOut} />
-                  <input className="calculator__input calculator__input--range" id="years-range" name="years-range" type="range" min={creditOptions[selectedOption.id].term.min} max={creditOptions[selectedOption.id].term.max} step={creditOptions[selectedOption.id].term.step} value={form.term}  onChange={handleTermChange} />
+                  <input className="calculator__input calculator__input--range" id="years-range"  name="years-range" type="range" min={creditOptions[selectedOption.id].term.min} max={creditOptions[selectedOption.id].term.max} step={creditOptions[selectedOption.id].term.step} value={form.term}  onChange={handleTermChange} />
                   <div>
                     <span className="calculator__text-small">{creditOptions[selectedOption.id].term.min} лет</span>                  
                     <span className="calculator__text-small">{creditOptions[selectedOption.id].term.max} лет</span>
                   </div>
                 </div>
                 <div>
-                  <input className="calculator__checkbox visually-hidden" type="checkbox"  id="discount1" name="discount1" checked={form.discount1} onChange={handleDiscount1Change} />
+                  <input className="calculator__checkbox visually-hidden" type="checkbox" id="discount1" name="discount1" checked={form.discount1} onChange={handleDiscount1Change} />
                   <label className="calculator__label calculator__label--checkbox" htmlFor="discount1">{creditOptions[selectedOption.id].checkboxes[0].name}</label>
                   { selectedOption.id === 1 
                   ? <>
-                      <input className="calculator__checkbox visually-hidden" type="checkbox"  id="discount2" name="discount2" checked={form.discount2} onChange={handleDiscount2Change} />
+                      <input className="calculator__checkbox visually-hidden" type="checkbox" id="discount2" name="discount2" checked={form.discount2} onChange={handleDiscount2Change} />
                       <label className="calculator__label calculator__label--checkbox" htmlFor="discount2">{creditOptions[selectedOption.id].checkboxes[1].name}</label>
                     </>
                   : " "

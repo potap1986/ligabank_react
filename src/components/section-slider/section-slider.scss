@@ -18,7 +18,7 @@
 		}
 	}
 
-	.swiper-pagination {
+	.swiper-container-horizontal>.swiper-pagination-bullets {
 		bottom: 36px;
 
 		@media (max-width: 767px) {

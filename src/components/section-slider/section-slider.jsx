@@ -4,7 +4,7 @@ import SlideCredit from '../slide-credit/slide-credit'
 import SlideStable from '../slide-stable/slide-stable'
 import SlideNear from '../slide-near/slide-near'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore, { Autoplay, EffectFade, Pagination } from 'swiper';
+import SwiperCore, { Autoplay, EffectFade, Pagination, Keyboard } from 'swiper';
 
 
 import "swiper/components/effect-fade/effect-fade.scss"
@@ -13,7 +13,7 @@ import 'swiper/swiper-bundle.min.css'
 import 'swiper/swiper.min.css'
 import { SLIDER_DELAY } from '../../const'
 
-SwiperCore.use([Autoplay, Pagination, EffectFade]);
+SwiperCore.use([Autoplay, Pagination, EffectFade, Keyboard]);
 
 const SectionSlider = () => {
   return (
@@ -27,6 +27,10 @@ const SectionSlider = () => {
         }} 
         effect={'fade'}
         pagination={{ clickable: true }}
+        keyboard= {{
+          enabled: true,
+          onlyInViewport: true,
+        }}
       >
         <SwiperSlide><SlideCredit /></SwiperSlide>
         <SwiperSlide><SlideStable /></SwiperSlide>

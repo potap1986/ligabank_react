@@ -20,4 +20,11 @@ const PERCENT_LIMIT = 15
 
 const MONTH_IN_YEAR = 12
 
-export {KeyFormDates, ActionType, SLIDER_DELAY, PERCENT_LIMIT, MONTH_IN_YEAR}
+const PHONE_LENGTH = 16
+
+const AmountLength = {
+  MIN: 5,
+  MAX: 8
+}
+
+export {KeyFormDates, ActionType, SLIDER_DELAY, PERCENT_LIMIT, MONTH_IN_YEAR, PHONE_LENGTH, AmountLength}

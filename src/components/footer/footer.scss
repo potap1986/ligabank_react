@@ -76,16 +76,13 @@
 	}
 
 	svg {
-		margin-right: 5px;
-		fill: #2C36F2;
 
 		@media (max-width: 1023px) {
-			margin-right: -2px;
+			width: 132px;
 		}
 
 		@media (max-width: 767px) {
-			margin-right: 1px;
-			width: 19px;
+			width: 99px;
 			height: 18px;
 		}
 	}
@@ -95,21 +92,6 @@
 	&:hover,
 	&:focus {
 		opacity: 0.7;
-	}
-}
-
-.footer__logo-text {
-	font-family: "WorkSans", "Arial", sans-serif;
-	font-weight: 700;
-	font-size: 20px;
-	line-height: 23px;
-	color: #1f1e25;
-
-	@media (max-width: 1023px) {}
-
-	@media (max-width: 767px) {
-		font-size: 16px;
-		line-height: 19px;
 	}
 }
 
@@ -223,6 +205,7 @@
 
 .footer__social-list {
 	display: flex;
+	flex-wrap: wrap;
 	list-style: none;
 	padding: 0;
 	margin: 0;
@@ -234,6 +217,7 @@
 
 .footer__social-item {
 	margin-right: 15px;
+	margin-bottom: 15px;
 
 	@media (max-width: 1023px) {
 		margin-right: 20px;

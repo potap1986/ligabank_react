@@ -26,10 +26,9 @@ const Footer = () => {
       <div className="footer__container container">
         <div className="footer__left">
           <a href="ligabank.com" className="footer__logo">
-            <svg width="28" height="25">
+            <svg width="150" height="25">
               <use xlinkHref="#logo" />
             </svg>
-            <span className="footer__logo-text"> ЛИГА Банк</span>
           </a>
           <nav className="footer__nav footer__column">
             <ul className="footer__nav-list">
