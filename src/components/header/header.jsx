@@ -27,9 +27,13 @@ const Header = (props) => {
   
   const mediaQueryMobile = window.matchMedia('(max-width: 767px)')
   const [visibleMenu, setMenuVisible] = useState(false)
+  const [visibleLogoMobile, setLogoMobileVisible] = useState(mediaQueryMobile.matches ? true : false)
   const handleWindowSizeChangeMobile = () => {
     if (!mediaQueryMobile.matches) {
       setMenuVisible(false)
+      setLogoMobileVisible(false)
+    } else {
+      setLogoMobileVisible(true)
     }
   };
 
@@ -50,10 +54,23 @@ const Header = (props) => {
             </svg>
           </button>
           <a href="ligabank.com" className="header__logo">
-            <svg width="150" height="25">
-              <use xlinkHref="#logo" />
-            </svg>
+            {visibleLogoMobile ? 
+              <svg width="116" height="19">
+                <use xlinkHref="#logo-mobile" />
+              </svg>
+              : <svg width="150" height="25">
+                <use xlinkHref="#logo" />
+              </svg>
+            }
           </a>
+          {visibleMenu ? 
+            <button className="header__close" type="button" aria-label="Закрыть меню" onClick={() => { setMenuVisible(false) }}>
+              <svg width="13" height="13">
+                <use xlinkHref="#close"></use>
+              </svg>
+            </button>
+            : <></>
+          }
           <nav className="header__nav">
             <ul className="header__nav-list">
               {headerLinks.map((link, index) => (
@@ -72,11 +89,6 @@ const Header = (props) => {
                 <use xlinkHref="#enter" />
               </svg>
               <span className="header__login">Войти в Интернет-банк</span>
-            </button>
-            <button className="header__close" type="button" aria-label="Закрыть меню" onClick={() => { setMenuVisible(false) }}>
-              <svg width="13" height="13">
-                <use xlinkHref="#close"></use>
-              </svg>
             </button>
           </nav>
           <button className="header__enter header__enter--mobile" onClick={props.onPopupEnterOpen}>

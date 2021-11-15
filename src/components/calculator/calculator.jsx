@@ -217,9 +217,9 @@ const Calculator = (props) => {
       if (sum.toString().length > AmountLength.MAX) {
         sum = +sum.toString().substring(0, AmountLength.MAX); 
       } 
-      if (sum.toString().length < AmountLength.MIN) {
-        sum = form.sum 
-      } 
+      // if (sum.toString().length < AmountLength.MIN) {
+      //   sum = form.sum 
+      // } 
     }
     changeForm({
       ...form,
@@ -233,6 +233,7 @@ const Calculator = (props) => {
     let sum = form.sum
     if(sum < creditOptions[selectedOption.id].sum.min) {
       sum = creditOptions[selectedOption.id].sum.min
+      
     } 
     if(sum > creditOptions[selectedOption.id].sum.max) {
       sum = creditOptions[selectedOption.id].sum.max

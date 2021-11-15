@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import './app.scss';
 import Header from '../header/header';
 import Footer from '../footer/footer';
-import Map from '../map/map';
 import SectionSlider from '../section-slider/section-slider';
 import Tabs from '../tabs/tabs';
 import Calculator from '../calculator/calculator';
 import PopupEnter from '../potup-enter/popup-enter';
 import PopupInfo from '../potup-info/popup-info';
+import MapContacts from '../map-contacts/map-contacts'
 import { connect } from 'react-redux'
 
 const App = (props) => {
@@ -33,9 +33,10 @@ const App = (props) => {
         <SectionSlider />
         <Tabs />
         <Calculator />
-        <Map />
+        <MapContacts />
       </main>
       <Footer />
+
 
       {renderPopup(props.visibleEnter, PopupEnter)}
       {renderPopup(props.visibleInfo, PopupInfo)}
