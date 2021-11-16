@@ -16,24 +16,24 @@
     padding: 54px 5px;
     padding-bottom: 52px;
 
-    background-size: 15%;
+    background-size: 13%;
     background-repeat: no-repeat;
     background-position: right 39%;
 
     @media (max-width: 758px) {
-      background-size: 17%;
+      background-size: 15%;
     }
 
     @media (max-width: 680px) {
-      background-size: 19%;
+      background-size: 17%;
     }
 
     @media (max-width: 645px) {
-      background-size: 21%;
+      background-size: 19%;
     }
 
     @media (max-width: 590px) {
-      background-size: 22%;
+      background-size: 20%;
     }
 
     @media (max-width: 520px) {
@@ -143,16 +143,34 @@
   margin: 0;
   padding-left: 8px;
   white-space: pre-wrap;
+  white-space: pre-wrap;
 
   @media (max-width: 1283px) {
     white-space: normal;
   }
 
-  @media (max-width: 1023px) {
+  @media (max-width: 793px) {
+    white-space: pre-wrap;
+
+  }
+
+  @media (max-width: 767px) {
+    font-weight: normal;
+  }
+
+  @media (max-width:767px) {
+    white-space: normal;
+  }
+
+
+  @media (max-width: 321px) {
     white-space: pre-wrap;
   }
 
-  @media (max-width: 767px) {}
+  @media (max-width: 298px) {
+    white-space: normal;
+  }
+
 }
 
 .tab__avantage-svg {
